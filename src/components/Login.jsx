@@ -153,19 +153,19 @@ const Login = () => {
           </div>
         </div>
       </div>
-      <div className="mt-4 text-center text-gray-600 text-sm">
-        <div>
-          <span>
-            Klinik Asy-Syifa &copy; {new Date().getFullYear()} Lokasi: Desa
-            Randudongkal, Pemalang, Jawa Tengah, Indonesia
-          </span>
+        <div className="mt-4 text-center text-gray-600 text-sm">
+          <div>
+            <span>
+              Klinik Asy-Syifa &copy; {new Date().getFullYear()} Lokasi: Desa
+              Randudongkal, Pemalang, Jawa Tengah, Indonesia
+            </span>
+          </div>
+          <div>
+            <span>
+              Layanan: Konsultasi Dokter Umum, Tes Darah, Cek Kesehatan, dll.
+            </span>
+          </div>
         </div>
-        <div>
-          <span>
-            Layanan: Konsultasi Dokter Umum, Pemeriksaan Gigi, Tes Darah, dll.
-          </span>
-        </div>
-      </div>
     </div>
   );
 };

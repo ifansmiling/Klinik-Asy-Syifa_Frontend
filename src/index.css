@@ -1,7 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* Di file CSS Anda */
 @keyframes wiggle {
     25% {
       transform: rotate(-10deg);

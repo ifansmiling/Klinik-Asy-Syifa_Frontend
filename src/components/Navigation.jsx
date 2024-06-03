@@ -56,8 +56,8 @@ function Navbar() {
   };
 
   return (
-    <nav className="border-gray-200 dark:bg-gray-900 fixed top-0 w-full z-10">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 bg-white border-b">
+    <nav className="border-gray-200 dark:bg-gray-900 fixed top-0 w-full z-10  border border-yellow-200">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 bg-white ">
         <NavLink to="/dashboard">
           <img src={Logo} className="h-12" alt="Klinik Logo" />
         </NavLink>
@@ -178,9 +178,9 @@ function Sidebar() {
   };
 
   return (
-    <div className="flex sticky top-2">
-      <section className="w-20 sm:w-64 h-screen bg-white overflow-y-hidden border-r border-gray-200 sticky top-2">
-        <div className=" border-b text-sm">
+    <div className="flex sticky top-2 border border-yellow-100 mt-3">
+      <section className="w-20 sm:w-64 h-screen bg-white overflow-y-hidden border-r border-yellow-100 sticky top-2">
+        <div className=" border-b-2 border-yellow-100 text-sm">
           <Menus
             menu={menu1}
             title={{ sm: "GENERAL", xs: "General" }}
@@ -188,7 +188,7 @@ function Sidebar() {
           />
         </div>
         {role !== "Dokter" && (
-          <div className="border-b text-sm">
+          <div className="border-b-2 border-yellow-100 text-sm">
             <Menus
               menu={menu2}
               title={{ sm: "APPLICATION", xs: "APP" }}
@@ -196,7 +196,7 @@ function Sidebar() {
             />
           </div>
         )}
-        <div className="border-b text-sm">
+        <div className="border-b-2 border-yellow-100 text-sm">
           <Menus
             menu={menu3}
             title={{ sm: "AUTHENTICATION", xs: "AUTH" }}
@@ -254,9 +254,9 @@ function Menus({ menu, title, setActiveMenu }) {
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-200 text-black-800 py-4">
-      <div className="text-sm md:justify-between md:px-6">
-        <p className="md:order-1 text-center font-semi bold">
+    <footer className="bg-gray-200 text-black-800 py-3 border border-yellow-500">
+      <div className="text-sm md:justify-between">
+        <p className="text-center font-semi bold">
           &copy; {new Date().getFullYear()} <span>Asy-Syifa</span> - Solusi
           Kesehatan Terpercaya untuk Anda
         </p>

@@ -3,9 +3,9 @@ import Layout from "./Layout";
 import Chart from "react-apexcharts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faUser,
-  faPrescriptionBottleAlt,
-  faSpinner,
+  faProcedures,
+  faPills,
+  faClipboardCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import api from "../services/api";
 
@@ -22,7 +22,7 @@ const Dashboard = () => {
       },
     ],
   });
-  const [ setDailyChartData] = useState({
+  const [setDailyChartData] = useState({
     categories: [],
     series: [
       {
@@ -130,13 +130,15 @@ const Dashboard = () => {
 
   return (
     <Layout>
-      <div className="p-8 font-sans">
-        <h1 className="text-2xl font-bold mb-2">Selamat Datang!</h1>
-        <p className="text-lg mb-8">
+      <div className="p-8 font-sans border border-yellow-300">
+        <h1 className="text-2xl font-bold mb-2 text-justify">
+          Selamat Datang!
+        </h1>
+        <p className="text-lg mb-8 text-justify">
           Klinik Asy-Syifa merupakan tempat pelayanan kesehatan yang menyediakan
-          layanan medis berkualitas tinggi dengan perawatan yang terbaik. Kami
-          berkomitmen untuk memberikan pelayanan terbaik kepada setiap pasien
-          dan keluarga mereka.
+          layanan medis yang berkualitas dengan perawatan dan fasilitas yang
+          ada. Kami berkomitmen untuk memberikan pelayanan terbaik kepada setiap
+          pasien dan keluarga mereka.
         </p>
         <p className="text-lg mb-5">
           Berikut Informasi tentang pasien dan juga resep yang sedang dibuat
@@ -150,7 +152,7 @@ const Dashboard = () => {
             <p className="text-base md:text-xl">{patientsToday}</p>
             <div className="flex justify-center items-center mt-4 border-b-4 border-black pb-4">
               <FontAwesomeIcon
-                icon={faUser}
+                icon={faProcedures}
                 className="text-blue-700 text-3xl animate-bounce"
               />
             </div>
@@ -163,7 +165,7 @@ const Dashboard = () => {
             <p className="text-base md:text-xl">{totalResepHariIni}</p>
             <div className="flex justify-center items-center mt-4 border-b-4 border-black pb-4">
               <FontAwesomeIcon
-                icon={faPrescriptionBottleAlt}
+                icon={faPills}
                 className="text-green-700 text-3xl animate-pulse"
               />
             </div>
@@ -178,82 +180,101 @@ const Dashboard = () => {
             </p>
             <div className="flex justify-center items-center mt-4 border-b-4 border-black pb-4">
               <FontAwesomeIcon
-                icon={faSpinner}
-                className="text-yellow-700 text-3xl animate-spin"
+                icon={faClipboardCheck}
+                className="text-yellow-700 text-3xl animate-pulse"
               />
             </div>
           </div>
         </div>
 
-        <div className="bg-gray-200 p-6 rounded-lg mb-8 hover:bg-gray-300 transition-colors duration-300">
-          <h3 className="text-xl font-semibold mb-4">Grafik Pasien</h3>
-          <p className="text-base mb-4">
+        <div className="bg-white p-6 rounded-lg mb-4 duration-300 border border-blue-400">
+          <div className="bg-white">
+            <h3 className="text-xl font-semibold mb-8 border-b border-black">
+              CHART
+            </h3>
+          </div>
+          <p className="text-base mb-4 text-justify">
             Grafik di bawah ini menampilkan jumlah pasien yang datang setiap
             minggu dalam 7 minggu terakhir. Informasi ini membantu untuk melacak
             tren kunjungan pasien dari waktu ke waktu dan mengidentifikasi
-            pola-pola tertentu yang mungkin muncul
+            pola-pola tertentu yang mungkin muncul.
           </p>
-          <Chart
-            options={{
-              markers: {
-                size: 5,
-              },
-
-              chart: {
-                height: 350,
-                type: "area",
-                background: "#fff", // Set background color to white
-                marginTop: 40,
-                events: {
-                  click(event, chartContext, config) {
-                    const minDate =
-                      chartContext.w.globals.categoryLabels[
-                        config.dataPointIndex
-                      ].split(" - ")[0];
-                    const maxDate =
-                      chartContext.w.globals.categoryLabels[
-                        config.dataPointIndex
-                      ].split(" - ")[1];
-                    updateChartForClickedDate(minDate, maxDate);
+          <div className="border-b border-blue-300">
+            <Chart
+              options={{
+                markers: {
+                  size: 4,
+                },
+                chart: {
+                  height: 450,
+                  type: "area",
+                  background: "#fff",
+                  marginTop: 30,
+                  events: {
+                    click(event, chartContext, config) {
+                      const minDate =
+                        chartContext.w.globals.categoryLabels[
+                          config.dataPointIndex
+                        ].split(" - ")[0];
+                      const maxDate =
+                        chartContext.w.globals.categoryLabels[
+                          config.dataPointIndex
+                        ].split(" - ")[1];
+                      updateChartForClickedDate(minDate, maxDate);
+                    },
                   },
                 },
-              },
-              dataLabels: {
-                enabled: false,
-              },
+                toolbar: {
+                  show: true,
+                  tools: {
+                    download: true,
+                    selection: true,
+                    zoom: true,
+                    zoomin: true,
+                    zoomout: true,
+                    pan: true,
+                    reset: true, 
+                    customIcons: [],
+                  },
+                  autoSelected: "zoom", 
+                },
+                dataLabels: {
+                  enabled: false,
+                },
 
-              stroke: {
-                curve: "smooth",
-              },
-              xaxis: {
-                categories: chartData.categories,
-              },
-              
-              tooltip: {
-                shared: false,
-                intersect: true,
-                x: {
-                  format: "dd/MM/yy HH:mm",
+                stroke: {
+                  curve: "smooth",
                 },
-              },
-              colors: ["#008FFB"], // Warna untuk series pertama, kedua, dan ketiga
-              title: {
-                text: "Patient Chart",
-                align: "center",
-                margin: 10,
-                offsetY: 20,
-                style: {
-                  fontSize: "22px",
-                  fontFamily: "Inter, sans-serif",
-                  fontWeight: "semi bold",
-                  color: "#333",
+                xaxis: {
+                  categories: chartData.categories,
                 },
-              },
-            }}
-            series={chartData.series}
-            type="area"
-            height={350}
-          />
+
+                tooltip: {
+                  shared: false,
+                  intersect: true,
+                  x: {
+                    format: "dd/MM/yy HH:mm",
+                  },
+                },
+                colors: ["#008FFB"],
+                title: {
+                  text: "Patient Chart",
+                  align: "center",
+                  margin: 40,
+                  offsetY: 20,
+                  style: {
+                    fontSize: "26px",
+                    fontFamily: "Robonto ",
+                    fontWeight: "bold",
+                    color: "#333",
+                  },
+                },
+              }}
+              series={chartData.series}
+              type="area"
+              height={350}
+            />
+          </div>
         </div>
       </div>
     </Layout>

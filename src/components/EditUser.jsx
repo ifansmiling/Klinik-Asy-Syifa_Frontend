@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../services/api";
-import { AiOutlineLoading3Quarters, AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; // Import ikon mata sandi
+import {
+  AiOutlineLoading3Quarters,
+  AiOutlineEye,
+  AiOutlineEyeInvisible,
+} from "react-icons/ai"; // Import ikon mata sandi
 
 const EditUser = () => {
   const { id } = useParams();
@@ -74,10 +78,12 @@ const EditUser = () => {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto">
-      <div className="px-8">
-        <div className="p-8 rounded-lg shadow-lg font-poppins">
-          <h2 className="text-xl font-bold mb-6 mt-4 text-center">Edit User</h2>
+    <div className="w-full p-5 rounded-lg font-inter bg-white border border-yellow-300 mt-10">
+      <div className="">
+        <div className="">
+          <h2 className="text-xl font-semibold mb-6 mt-4 text-center">
+            Edit User
+          </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -93,7 +99,7 @@ const EditUser = () => {
                   name="nama"
                   value={formData.nama}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs"
+                  className="mt-1 block w-full px-3 py-2 border border-yellow-500 rounded-md shadow-sm focus:outline-none focus:ring-indigo-700 focus:border-indigo-500 text-sm"
                   required
                 />
               </div>
@@ -110,7 +116,7 @@ const EditUser = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs"
+                  className="mt-1 block w-full px-3 py-2 border border-yellow-500 rounded-md shadow-sm focus:outline-none focus:ring-indigo-700 focus:border-indigo-500 text-sm"
                   required
                 />
               </div>
@@ -128,7 +134,7 @@ const EditUser = () => {
                     name="kata_sandi"
                     value={formData.kata_sandi}
                     onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs"
+                    className="mt-1 block w-full px-3 py-2 border border-yellow-500 rounded-md shadow-sm focus:outline-none focus:ring-indigo-700 focus:border-indigo-500 text-sm"
                   />
                   {/* Tambahkan ikon mata */}
                   <button
@@ -136,7 +142,11 @@ const EditUser = () => {
                     onClick={() => setShowPassword(!showPassword)} // Toggle state showPassword saat ikon mata diklik
                     className="absolute inset-y-0 right-0 flex items-center px-2 text-gray-500"
                   >
-                    {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+                    {showPassword ? (
+                      <AiOutlineEye />
+                    ) : (
+                      <AiOutlineEyeInvisible />
+                    )}
                   </button>
                 </div>
               </div>
@@ -152,11 +162,11 @@ const EditUser = () => {
                   name="roleId"
                   value={formData.roleId}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs"
+                  className="mt-1 block w-full px-3 py-2 border border-yellow-500 rounded-md shadow-sm focus:outline-none focus:ring-indigo-700 focus:border-indigo-500 text-sm"
                   required
                 >
                   <option value={null} disabled selected>
-                    Pilih Role 
+                    Pilih Role
                   </option>
                   {roleList.map((role) => (
                     <option key={role.id} value={role.id}>

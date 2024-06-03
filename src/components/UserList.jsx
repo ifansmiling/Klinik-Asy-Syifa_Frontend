@@ -28,7 +28,7 @@ const UserList = () => {
           return {
             ...user,
             role: role ? role.role : "Unknown",
-            active: user.active, // Tambahkan properti 'active'
+            active: user.active,
           };
         });
 
@@ -63,7 +63,6 @@ const UserList = () => {
     setEditClicked(true);
   };
 
-  // Perbarui status pengguna di server dan di state setelah menonaktifkan
   const handleDisable = async (record) => {
     console.log("Disable user:", record);
     try {
@@ -71,15 +70,14 @@ const UserList = () => {
       const updatedUsers = users.map((user) =>
         user.id === record.id ? { ...user, active: "inactive" } : user
       );
-      setUsers(updatedUsers); // Perbarui status pengguna di state
-      message.success("Sukses dinonaktifkan pengguna");
+      setUsers(updatedUsers);
+      message.success("Sukses menonaktifkan pengguna");
     } catch (error) {
       console.error("Error disabling user:", error);
       message.error("Gagal menonaktifkan pengguna");
     }
   };
 
-  // Perbarui status pengguna di server dan di state setelah mengaktifkan kembali
   const handleEnable = async (record) => {
     console.log("Enable user:", record);
     try {
@@ -87,7 +85,7 @@ const UserList = () => {
       const updatedUsers = users.map((user) =>
         user.id === record.id ? { ...user, active: "active" } : user
       );
-      setUsers(updatedUsers); // Perbarui status pengguna di state
+      setUsers(updatedUsers);
       message.success("Sukses mengaktifkan kembali pengguna");
     } catch (error) {
       console.error("Error enabling user:", error);
@@ -104,6 +102,7 @@ const UserList = () => {
       title: "Nama",
       dataIndex: "nama",
       key: "nama",
+      className: "border border-yellow-100",
       sorter: (a, b) => a.nama.localeCompare(b.nama),
       sortOrder: sortedInfo.columnKey === "nama" ? sortedInfo.order : null,
       ellipsis: true,
@@ -112,12 +111,14 @@ const UserList = () => {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      className: "border border-yellow-100",
       ellipsis: true,
     },
     {
       title: "Role",
       dataIndex: "role",
       key: "role",
+      className: "border border-yellow-100",
       filters: roles.map((role) => ({ text: role.role, value: role.role })),
       filteredValue: filteredInfo.role || null,
       onFilter: (value, record) => record.role === value,
@@ -127,6 +128,7 @@ const UserList = () => {
       title: "Active",
       dataIndex: "active",
       key: "active",
+      className: "border border-yellow-100",
       render: (text, record) => (
         <span>
           {record.active === "active" ? (
@@ -146,8 +148,9 @@ const UserList = () => {
     },
 
     {
-      title: "Action",
+      title: "Aksi",
       key: "action",
+      className: "border border-yellow-100",
       render: (record) => (
         <Space size="middle">
           <Link
@@ -210,21 +213,21 @@ const UserList = () => {
             onClick={clearFilters}
             className="mt-1 flex items-center justify-center"
           >
-            Clear filters
+            Bersihkan Filter
           </Button>
           <Button
             onClick={clearAll}
             className="mt-1 flex items-center justify-center"
           >
-            Clear filters and sorters
+            Bersihkan filter dan sortir
           </Button>
         </div>
       </div>
-      <div className="mt-2 mb-2 ml-2 text-left">
+      <div className="mt-2 mb-2 text-left">
         <Link
           to={"/user/add"}
           onClick={handleAddUser}
-          className="inline-block px-4 py-2 text-sm text-white bg-green-500 rounded-lg hover:bg-green-600 focus:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 hover:bg-green-800"
+          className="inline-block px-4 py-2 text-sm text-white bg-green-500 rounded-lg hover:bg-green-600 focus:bg-green-600 focus:outline-none focus:ring-5 focus:ring-white focus:ring-opacity-100 hover:bg-white-800"
         >
           Add User
         </Link>

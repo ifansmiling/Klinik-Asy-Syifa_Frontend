@@ -60,10 +60,10 @@ const AddUser = () => {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto">
-      <div className="px-8">
-        <div className="p-8 rounded-lg shadow-lg font-poppins">
-          <h2 className="text-xl font-bold mb-6 mt-4 text-center">Add User</h2>
+    <div className="w-full p-5 rounded-lg font-inter bg-white border border-yellow-300 mt-8">
+      <div className="">
+        <div className="">
+          <h2 className="text-xl font-semibold mb-6 mt-4 text-center">Add User</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -81,7 +81,7 @@ const AddUser = () => {
                   placeholder="Contoh: Admin"
                   value={formData.nama}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs"
+                  className="mt-1 block w-full px-3 py-2 border border-yellow-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs"
                   required
                 />
               </div>
@@ -99,7 +99,7 @@ const AddUser = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs"
+                  className="mt-1 block w-full px-3 py-2 border border-yellow-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs"
                   required
                   placeholder="Contoh: admin@gmail.com"
                 />
@@ -121,7 +121,7 @@ const AddUser = () => {
                     name="kata_sandi"
                     value={formData.kata_sandi}
                     onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs"
+                    className="mt-1 block w-full px-3 py-2 border border-yellow-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs"
                     required
                     placeholder="*******"
                   />
@@ -148,7 +148,7 @@ const AddUser = () => {
                     name="roleId"
                     value={formData.roleId}
                     onChange={handleChange}
-                    className="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs"
+                    className="mt-1 block w-full px-3 py-2 border border-yellow-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs"
                     required
                   >
                     <option value={null} selected disabled>
@@ -166,7 +166,7 @@ const AddUser = () => {
             <div className="flex justify-end">
               <button
                 type="submit"
-                className="py-2 px-4 min-w-[150px] grid place-items-center border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="py-2 px-4 min-w-[150px] grid place-items-center border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 {loading ? (
                   <AiOutlineLoading3Quarters className="animate-spin" />

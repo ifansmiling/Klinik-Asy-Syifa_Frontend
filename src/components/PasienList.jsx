@@ -34,7 +34,7 @@ const PasienList = () => {
           (a, b) => new Date(b.tanggal_berobat) - new Date(a.tanggal_berobat)
         );
         setPatients(sortedPatients);
-        setInitialPatients(sortedPatients); // Menyimpan daftar pasien awal
+        setInitialPatients(sortedPatients); 
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -46,7 +46,6 @@ const PasienList = () => {
 
   const handleChange = (pagination, filters, sorter) => {
     console.log("Various parameters", pagination, filters, sorter);
-    // Anda bisa menambahkan logika untuk filter dan sorting di sini jika diperlukan
   };
 
   const handleEdit = (record) => {
@@ -78,6 +77,7 @@ const PasienList = () => {
       title: "Nama Pasien",
       dataIndex: "nama_pasien",
       key: "nama_pasien",
+      className: "border border-yellow-200",
       ellipsis: true,
       // Filter untuk pencarian
       filterDropdown: ({
@@ -102,9 +102,9 @@ const PasienList = () => {
           <Button
             type="primary"
             onClick={() => handleSearch(selectedKeys, confirm, "nama_pasien")}
-            icon={<BiSearch />} // Menggunakan BiSearch icon
             size="small"
             style={{ width: 90, marginRight: 8 }}
+            className="w-24 bg-yellow-400 border-yellow-500"
           >
             Search
           </Button>
@@ -112,13 +112,14 @@ const PasienList = () => {
             onClick={() => handleReset(clearFilters)}
             size="small"
             style={{ width: 90 }}
+            className="w-24 bg-yellow-400 border-yellow-500"
           >
             Reset
           </Button>
         </div>
       ),
       filterIcon: (filtered) => (
-        <BiSearch style={{ color: filtered ? "#1890ff" : undefined }} /> // Menggunakan BiSearch icon
+        <BiSearch style={{ color: filtered ? "#1890ff" : undefined }} /> 
       ),
 
       onFilter: (value, record) =>
@@ -142,30 +143,34 @@ const PasienList = () => {
       title: "Alamat Pasien",
       dataIndex: "alamat_pasien",
       key: "alamat_pasien",
+      className: "border border-yellow-200",
       ellipsis: true,
     },
     {
       title: "Dokter",
       dataIndex: "dokter",
       key: "dokter",
+      className: "border border-yellow-200",
       ellipsis: true,
     },
     {
       title: "Tanggal Berobat",
       dataIndex: "tanggal_berobat",
       key: "tanggal_berobat",
+      className: "border border-yellow-200",
       ellipsis: true,
     },
     {
-      title: "Action" ,
+      title: "Aksi" ,
       key: "action",
+      className: "border border-yellow-200 ml-9",
       render: (record) => (
-        <Space size="middle" className="text-center ml-3">
+        <Space size="middle" className="text-center">
           <Link
             to={`/pasien/edit/${record.id}`}
-            className="text-blue-500 hover:text-blue-700 hover:underline text-zl" // Menambahkan kelas text-lg untuk membuat teks lebih besar
+            className="text-blue-500 hover:text-blue-700 hover:underline text-zl" 
             onClick={() => handleEdit(record)}
-            style={{ display: "inline-block", width: "100%" }} // Menjadikan tautan lebar 100%
+            style={{ display: "inline-block", width: "100%" }} 
           >
             Edit
           </Link>
@@ -181,8 +186,8 @@ const PasienList = () => {
 
   return (
     <div>
-      <div className="mt-7 text-center">
-        <h1 className="mb-4 font-semibold text-lg">Daftar Pasien</h1>
+      <div className="mt-9 text-center">
+        <h1 className="mb-5 mr-10 font-semibold text-lg ">Semua Pasien</h1>
       </div>
 
       <div className="overflow-x-auto">

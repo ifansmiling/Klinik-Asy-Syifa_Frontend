@@ -8,25 +8,21 @@ const DetailResep = ({ pasienId, onClose, onProcessCompleted }) => {
 
   const handleSelesaiDibuat = async () => {
     try {
-      // Panggil API untuk memperbarui status resep menjadi "Selesai"
       await api.put(`/pasien/${pasienId}`, { proses_resep: "Selesai" });
       setStatusUpdated(true);
       window.location.reload();
-      // window.location.reload(); // Refresh halaman setelah status
     } catch (error) {
       console.error("Error updating status:", error);
     }
   };
 
-  // Fungsi untuk mencetak resep
   const handleCetakResep = () => {
-    // Memicu pencetakan
     window.print();
   };
 
   useEffect(() => {
     if (statusUpdated) {
-      message.success("Resep Selesai Dibuat"); // Menampilkan pesan sukses
+      message.success("Resep Selesai Dibuat"); 
       onProcessCompleted();
     }
   }, [statusUpdated, onProcessCompleted]);

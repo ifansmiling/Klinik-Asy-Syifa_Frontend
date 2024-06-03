@@ -17,7 +17,6 @@ const HistoryResep = () => {
   const [selectedResepObatByObatId, setSelectedResepObatByObatId] = useState(
     {}
   );
-  
 
   const [resepProcessed, setResepProcessed] = useState(() => {
     // Set status resep awal berdasarkan local storage
@@ -90,20 +89,16 @@ const HistoryResep = () => {
   const handleAction = async (record) => {
     try {
       setModalVisible(true);
-      setSelectedPasienId(record.id); // Simpan ID pasien yang dipilih
+      setSelectedPasienId(record.id);
 
-      // Panggil API untuk mendapatkan data pasien berdasarkan ID
       const response = await api.get(`/pasien/${record.id}`);
       const pasienData = response.data;
 
-      // Panggil API untuk mendapatkan data obat berdasarkan ID pasien
       const obatResponse = await api.get(`/obat/${record.id}`);
       const obatData = obatResponse.data;
 
-      // Ambil semua obat_id dari data obat
       const obatIds = obatData.map((obat) => obat.id);
 
-      // Panggil API untuk mendapatkan semua resep obat berdasarkan semua obat_id
       const resepObatPromises = obatIds.map((obatId) =>
         api.get(`/resep_obat/obat/${obatId}`)
       );
@@ -112,15 +107,11 @@ const HistoryResep = () => {
         (response) => response.data
       );
 
-      // Gabungkan semua data resep obat menjadi satu array
       const mergedResepObatData = allResepObatData.flat();
-
-      // Simpan data pasien, obat, dan resep obat yang dipilih ke state
       setSelectedPasienData(pasienData);
       setSelectedObatData(obatData);
       setSelectedResepObatData(mergedResepObatData);
 
-      // Simpan data resep obat berdasarkan obat_id ke dalam state
       const selectedResepObatGroupedByObatId = mergedResepObatData.reduce(
         (acc, resep_obat) => {
           if (!acc[resep_obat.id_obat]) {
@@ -133,19 +124,14 @@ const HistoryResep = () => {
       );
       setSelectedResepObatByObatId(selectedResepObatGroupedByObatId);
 
-      // Panggil API untuk memperbarui status resep pasien menjadi diproses
       await api.put(`/pasien/${record.id}`, { proses_resep: "Proses" });
 
-      // Set state resepProcessed menjadi true
       setResepProcessed(true);
-
-      // Update state pasienList dengan status resep yang sudah diproses
       const updatedPasienList = pasienList.map((pasien) =>
         pasien.id === record.id ? { ...pasien, proses_resep: "Proses" } : pasien
       );
       setPasienList(updatedPasienList);
 
-      // Tampilkan pesan sukses
       message.success("Status resep berhasil diperbarui");
     } catch (error) {
       console.error("Error fetching patient data:", error);
@@ -157,16 +143,12 @@ const HistoryResep = () => {
   const handleCloseModal = async () => {
     try {
       if (!resepProcessed) {
-        // Jika proses belum selesai, update status resep ke "Proses"
-        // Panggil API untuk memperbarui status resep pasien menjadi diproses
         await api.put(`/pasien/${selectedPasienId}`, {
           proses_resep: "Proses",
         });
 
-        // Set state resepProcessed menjadi true
         setResepProcessed(true);
 
-        // Update state pasienList dengan status resep yang sudah diproses
         const updatedPasienList = pasienList.map((pasien) =>
           pasien.id === selectedPasienId
             ? { ...pasien, proses_resep: "Proses" }
@@ -175,24 +157,18 @@ const HistoryResep = () => {
         setPasienList(updatedPasienList);
       }
 
-      // Tutup modal
       setModalVisible(false);
       setSelectedPasienId(null);
       setSelectedPasienData(null);
       setSelectedResepObatData(null);
-
-      // Tampilkan pesan sukses
       message.success("Status resep berhasil diperbarui");
       window.location.reload();
     } catch (error) {
       console.error("Error handling modal close:", error);
-      // Tampilkan pesan error jika terjadi kesalahan
       message.error("Gagal menutup modal");
     }
   };
-
   const handleProcessCompleted = () => {
-    // Lakukan tindakan yang diperlukan saat proses selesai, jika ada
     console.log("Proses telah selesai");
   };
 
@@ -211,23 +187,23 @@ const HistoryResep = () => {
       title: "Nama Pasien",
       dataIndex: "nama_pasien",
       key: "nama_pasien",
+      className: "border border-yellow-200 text-white-900 font-medium",
       filteredValue: filteredInfo.nama_pasien
         ? [filteredInfo.nama_pasien]
         : null,
       onFilter: (value, record) => {
-        const namaPasien = record?.nama_pasien || ""; // Jika nama_pasien tidak terdefinisi, gunakan string kosong
+        const namaPasien = record?.nama_pasien || "";
         const lowercaseValue =
-          typeof value === "string" ? value.toLowerCase() : ""; // Pastikan value adalah string sebelum memanggil toLowerCase
+          typeof value === "string" ? value.toLowerCase() : "";
         return namaPasien.toLowerCase().includes(lowercaseValue);
       },
-
       filterDropdown: ({
         setSelectedKeys,
         selectedKeys,
         confirm,
         clearFilters,
       }) => (
-        <div style={{ padding: 8 }}>
+        <div className="p-4 border border-yellow-500">
           <Input
             placeholder="Search nama pasien"
             value={selectedKeys[0]}
@@ -237,66 +213,62 @@ const HistoryResep = () => {
             onPressEnter={() =>
               handleSearch(selectedKeys, confirm, "nama_pasien")
             }
-            style={{ width: 188, marginBottom: 8, display: "block" }}
+            className="w-48 mb-2 block border-yellow-500"
           />
           <Space>
             <Button
               type="primary"
               onClick={() => handleSearch(selectedKeys, confirm, "nama_pasien")}
-              size="small"
-              style={{ width: 90 }}
+              className="w-24 bg-yellow-400 border-yellow-500"
             >
               Search
             </Button>
             <Button
               onClick={() => handleReset(clearFilters)}
-              size="small"
-              style={{ width: 90 }}
+              className="w-24 bg-yellow-400 border-yellow-400"
             >
               Reset
             </Button>
           </Space>
         </div>
       ),
-
       filterIcon: (filtered) => (
         <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
       ),
-      render: (text) => <a>{text}</a>,
+      render: (text) => <a style={{ textAlign: "center" }}>{text}</a>,
       ellipsis: true,
     },
-
     {
       title: "Tanggal Berobat",
       dataIndex: "tanggal_berobat",
       key: "tanggal_berobat",
       sorter: (a, b) =>
         new Date(b.tanggal_berobat) - new Date(a.tanggal_berobat),
+      className: "border border-yellow-200",
     },
     {
       title: "Dokter",
       dataIndex: "dokter",
       key: "dokter",
       ellipsis: true,
+      className: "border border-yellow-200 ",
     },
     {
       title: "Proses Resep",
       dataIndex: "proses",
       key: "proses",
       render: (text, record) => {
-        // Periksa apakah status resep pasien ini sudah selesai
         const isResepSelesai = record.proses === "Selesai";
 
-        // Jika proses resep selesai, tampilkan status "Selesai"
         if (isResepSelesai) {
           return <span>Selesai</span>;
         } else if (resepProcessed && record.id === selectedPasienId) {
-          // Jika proses resep masih berjalan untuk pasien yang dipilih
           return <span>Proses</span>;
         } else {
           return <span>{text}</span>;
         }
       },
+      className: "border border-yellow-200",
     },
     {
       title: "Aksi",
@@ -305,23 +277,23 @@ const HistoryResep = () => {
         <Button
           type="primary"
           onClick={() => handleAction(record)}
-          style={{ backgroundColor: "green", borderColor: "green" }}
-          disabled={record.proses === "Selesai"} // Menonaktifkan tombol jika status resep sudah selesai
+          style={{ backgroundColor: "#32CD32", borderColor: "#32CD32" }}
+          disabled={record.proses === "Selesai"}
         >
           Buat Resep
         </Button>
       ),
+      className: "border border-yellow-200",
     },
   ];
 
   return (
     <>
-      <div className="text-center mb-8 mt-10">
-        <div className="mx-auto max-w-max">
-          <h1 className="text-xl font-semibold">List Resep Obat</h1>
+      <div className="text-center mr-10 mb-8 mt-8">
+        <div className="text-center mx-auto max-w-max">
+          <h1 className="text-xl font-semibold">Resep Obat & Obat</h1>
         </div>
       </div>
-
       <Table
         columns={columns}
         dataSource={pasienList.filter(
@@ -338,29 +310,29 @@ const HistoryResep = () => {
       />
 
       <Modal
-        title={<div className="text-center text-2xl">Resep Obat Pasien</div>}
+        title={<div className="text-center text-xl">Resep Obat Pasien</div>}
         open={modalVisible}
         onCancel={handleCloseModal}
         footer={null}
         centered
         width={700}
       >
-        <div className="p-4 text-sm">
+        <div className="p-4 text-xs max-h-[1000px] overflow-y-auto">
           {selectedPasienData && (
             <div className="mb-7">
-              <p className="text-sm">
+              <p className="text-xs">
                 <span className="font-semibold">Nama:</span>{" "}
                 {selectedPasienData.nama_pasien}
               </p>
-              <p className="text-sm">
+              <p className="text-xs">
                 <span className="font-semibold">Alamat:</span>{" "}
                 {selectedPasienData.alamat_pasien}
               </p>
-              <p className="text-sm">
+              <p className="text-xs">
                 <span className="font-semibold">Dokter:</span>{" "}
                 {selectedPasienData.dokter}
               </p>
-              <p className="text-sm">
+              <p className="text-xs">
                 <span className="font-semibold">Tanggal Berobat:</span>{" "}
                 {selectedPasienData.tanggal_berobat}
               </p>
@@ -369,7 +341,7 @@ const HistoryResep = () => {
           {selectedObatData &&
             selectedObatData.map((obat, index) => (
               <div key={obat.id}>
-                <h2 className="mb-1 text-lg font-semibold text-left">
+                <h2 className="mb-1 text-l font-semibold text-left">
                   Data Obat {index + 1}
                 </h2>
                 <table className="w-full border border-collapse border-gray-300 mb-4">
@@ -394,25 +366,25 @@ const HistoryResep = () => {
                   </thead>
                   <tbody>
                     <tr>
-                      <td className="border border-gray-300 p-2 text-sm text-center">
+                      <td className="border border-gray-300 p-2 text-xs text-center">
                         {index + 1}
                       </td>
-                      <td className="border border-gray-300 p-2 text-sm text-center">
+                      <td className="border border-gray-300 p-2 text-xs text-center">
                         {obat.nama_obat}
                       </td>
-                      <td className="border border-gray-300 p-2 text-sm text-center">
+                      <td className="border border-gray-300 p-2 text-xs text-center">
                         {obat.jumlah_obat}
                       </td>
-                      <td className="border border-gray-300 p-2 text-sm text-center">
+                      <td className="border border-gray-300 p-2 text-xs text-center">
                         {obat.dosis_obat}
                       </td>
-                      <td className="border border-gray-300 p-2 text-sm text-center">
+                      <td className="border border-gray-300 p-2 text-xs text-center">
                         {obat.cara_pakai}
                       </td>
                     </tr>
                   </tbody>
                 </table>
-                <h2 className="mb-1 text-lg font-semibold text-left">
+                <h2 className="mb-1 text-l font-semibold text-left">
                   Data Resep Obat {index + 1}
                 </h2>
                 <table className="w-full border border-collapse border-gray-300 mb-4">
@@ -437,16 +409,16 @@ const HistoryResep = () => {
                     {selectedResepObatByObatId[obat.id]?.map(
                       (resep_obat, index) => (
                         <tr key={resep_obat.id}>
-                          <td className="border border-gray-300 p-2 text-sm text-center">
+                          <td className="border border-gray-300 p-2 text-xs text-center">
                             {index + 1}
                           </td>
-                          <td className="border border-gray-300 p-2 text-sm text-center">
+                          <td className="border border-gray-300 p-2 text-xs text-center">
                             {resep_obat.nama_resep}
                           </td>
-                          <td className="border border-gray-300 p-2 text-sm text-center">
+                          <td className="border border-gray-300 p-2 text-xs text-center">
                             {resep_obat.jumlah_resep}
                           </td>
-                          <td className="border border-gray-300 p-2 text-sm text-center">
+                          <td className="border border-gray-300 p-2 text-xs text-center">
                             {resep_obat.bentuk_resep}
                           </td>
                         </tr>
@@ -468,6 +440,15 @@ const HistoryResep = () => {
 
           <div className="flex justify-center mt-6">
             <img src={Logo} className="h-8" alt="Klinik Logo" />
+          </div>
+          <div
+            className="mt-4 text-center text-gray-600"
+            style={{ fontSize: "0.7rem" }}
+          >
+            <span>
+              Klinik Asy-Syifa &copy; {new Date().getFullYear()} Lokasi: Desa
+              Randudongkal, Pemalang, Jawa Tengah, Indonesia
+            </span>
           </div>
         </div>
       </Modal>
