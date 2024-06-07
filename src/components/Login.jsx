@@ -33,7 +33,6 @@ const Login = () => {
         email: data.email,
         kata_sandi: data.kata_sandi,
       });
-      console.log("Login successful, response:", response.data);
       localStorage.setItem("token", response.data.accessToken);
       const userData = {
         nama: response.data.nama,
@@ -44,7 +43,6 @@ const Login = () => {
       setError(null);
       handleLoginSuccess(response.data.accessToken);
     } catch (error) {
-      console.error("Login failed, error:", error.response.data.message);
       setLoading(false);
       setError(error.response.data.message);
     }

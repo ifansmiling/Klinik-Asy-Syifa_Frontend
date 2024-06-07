@@ -18,7 +18,6 @@ function Navbar() {
 
   useEffect(() => {
     const storedUserData = JSON.parse(localStorage.getItem("userData"));
-    console.log(storedUserData); // Memeriksa nilai storedUserData
     if (storedUserData) {
       setUserData(storedUserData);
     }
@@ -178,32 +177,34 @@ function Sidebar() {
   };
 
   return (
-    <div className="flex sticky top-2 border border-yellow-100 mt-3">
-      <section className="w-20 sm:w-64 h-screen bg-white overflow-y-hidden border-r border-yellow-100 sticky top-2">
-        <div className=" border-b-2 border-yellow-100 text-sm">
-          <Menus
-            menu={menu1}
-            title={{ sm: "GENERAL", xs: "General" }}
-            setActiveMenu={handleSetActiveMenu}
-          />
-        </div>
-        {role !== "Dokter" && (
-          <div className="border-b-2 border-yellow-100 text-sm">
+    <div className="">
+      <div className=" border border-yellow-100 mt-3 z-70">
+        <section className="w-20 sm:w-64 h-screen bg-white overflow-y-hidden border-r border-yellow-100">
+          <div className=" border-b-2 border-yellow-100 text-sm">
             <Menus
-              menu={menu2}
-              title={{ sm: "APPLICATION", xs: "APP" }}
+              menu={menu1}
+              title={{ sm: "GENERAL", xs: "General" }}
               setActiveMenu={handleSetActiveMenu}
             />
           </div>
-        )}
-        <div className="border-b-2 border-yellow-100 text-sm">
-          <Menus
-            menu={menu3}
-            title={{ sm: "AUTHENTICATION", xs: "AUTH" }}
-            setActiveMenu={handleSetActiveMenu}
-          />
-        </div>
-      </section>
+          {role !== "Dokter" && (
+            <div className="border-b-2 border-yellow-100 text-sm">
+              <Menus
+                menu={menu2}
+                title={{ sm: "APPLICATION", xs: "APP" }}
+                setActiveMenu={handleSetActiveMenu}
+              />
+            </div>
+          )}
+          <div className="border-b-2 border-yellow-100 text-sm">
+            <Menus
+              menu={menu3}
+              title={{ sm: "AUTHENTICATION", xs: "AUTH" }}
+              setActiveMenu={handleSetActiveMenu}
+            />
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

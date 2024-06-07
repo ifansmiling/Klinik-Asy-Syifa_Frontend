@@ -85,7 +85,7 @@ const DataPasien = () => {
   return (
     <div className="p-8 rounded-lg font-inter mt-7 bg-white border border-yellow-300">
       <div className="">
-        <h2 className="text-lg font-semibold mb-5 text-center font-arial">
+        <h2 className="text-lg font-semibold mb-5 mr-9 text-center font-arial">
           Form Data Pasien
         </h2>
       </div>
