@@ -33,13 +33,8 @@ const Login = () => {
         email: data.email,
         kata_sandi: data.kata_sandi,
       });
-
-      const accessToken = response.data.accessToken;
-
-      
-      localStorage.setItem("accessToken", accessToken);
-
-    
+      console.log("Login successful, response:", response.data);
+      localStorage.setItem("token", response.data.accessToken);
       const userData = {
         nama: response.data.nama,
         role: response.data.role,
