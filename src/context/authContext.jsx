@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
@@ -9,24 +9,23 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("accessToken");
     if (token) {
-      // Validasi token bisa ditambahkan di sini
       setIsAuthenticated(true);
     }
     setLoading(false);
   }, []);
 
   const login = (token) => {
-    localStorage.setItem('token', token);
+    localStorage.setItem("accessToken", token);
     setIsAuthenticated(true);
-    navigate('/dashboard');
+    navigate("/dashboard");
   };
 
   const logout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem("accessToken");
     setIsAuthenticated(false);
-    navigate('/');
+    navigate("/");
   };
 
   return (
@@ -38,5 +37,4 @@ export const AuthProvider = ({ children }) => {
 
 export const useAuth = () => useContext(AuthContext);
 
-// Pastikan untuk mengekspor AuthContext di sini
 export { AuthContext };

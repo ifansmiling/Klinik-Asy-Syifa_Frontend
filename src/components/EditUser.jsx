@@ -31,7 +31,7 @@ const EditUser = () => {
 
   const getUserData = async () => {
     try {
-      const response = await api.get(`/user/${id}`);
+      const response = await api.get(`/users/${id}`);
       const userData = response.data;
       setFormData({
         nama: userData.nama,
@@ -66,7 +66,7 @@ const EditUser = () => {
     setLoading(true);
     try {
       const userData = { ...formData };
-      await api.put(`/user/${id}`, userData);
+      await api.put(`/users/${id}`, userData);
       setSuccess(true);
       setLoading(false);
       setError(null);

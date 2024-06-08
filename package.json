@@ -1,6 +1,7 @@
 {
   "name": "frontend",
   "private": true,
+  "homepage": "https://klinikasysyifa.my.id/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {

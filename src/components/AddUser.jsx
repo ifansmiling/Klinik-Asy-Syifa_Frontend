@@ -14,7 +14,7 @@ const AddUser = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); // State untuk menunjukkan atau menyembunyikan kata sandi
+  const [showPassword, setShowPassword] = useState(false); 
 
   const [roleList, setRoleList] = useState();
 
@@ -43,7 +43,7 @@ const AddUser = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      await api.post("/user", {
+      await api.post("/users", {
         nama: formData.nama,
         email: formData.email,
         kata_sandi: formData.kata_sandi,
@@ -116,7 +116,7 @@ const AddUser = () => {
                 </label>
                 <div className="relative">
                   <input
-                    type={showPassword ? "text" : "password"} // Tampilkan atau sembunyikan kata sandi sesuai state showPassword
+                    type={showPassword ? "text" : "password"}
                     id="kata_sandi"
                     name="kata_sandi"
                     value={formData.kata_sandi}

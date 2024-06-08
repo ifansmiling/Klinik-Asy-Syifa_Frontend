@@ -19,7 +19,7 @@ const UserList = () => {
       setLoading(true);
       try {
         const [userData, roleData] = await Promise.all([
-          api.get("/user"),
+          api.get("/users"),
           api.get("/role"),
         ]);
 
@@ -66,7 +66,7 @@ const UserList = () => {
   const handleDisable = async (record) => {
     console.log("Disable user:", record);
     try {
-      await api.put(`/user/${record.id}/disable`);
+      await api.put(`/users/${record.id}/disable`);
       const updatedUsers = users.map((user) =>
         user.id === record.id ? { ...user, active: "inactive" } : user
       );
@@ -81,7 +81,7 @@ const UserList = () => {
   const handleEnable = async (record) => {
     console.log("Enable user:", record);
     try {
-      await api.put(`/user/${record.id}/enable`);
+      await api.put(`/users/${record.id}/enable`);
       const updatedUsers = users.map((user) =>
         user.id === record.id ? { ...user, active: "active" } : user
       );
@@ -154,7 +154,7 @@ const UserList = () => {
       render: (record) => (
         <Space size="middle">
           <Link
-            to={`/user/edit/${record.id}`}
+            to={`/users/edit/${record.id}`}
             className={`text-blue-500 ${
               editClicked ? "text-blue-500" : ""
             } hover:text-blue-500 hover:underline`}
@@ -244,7 +244,7 @@ const UserList = () => {
               columns={columns}
               dataSource={paginatedUsers}
               onChange={handleChange}
-              pagination={false} // Disable pagination for now, you can remove this line if you want pagination
+              pagination={false} 
             />
             <div className="flex justify-end mt-4">
               <Pagination

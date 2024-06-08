@@ -1,22 +1,29 @@
-import React, { useContext } from 'react';
-import { Navigate } from 'react-router-dom';
-import { AuthContext } from '../context/authContext';
+import React, { useContext } from "react";
+import { Navigate } from "react-router-dom";
+import { AuthContext } from "../context/authContext";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const { isAuthenticated, loading } = useContext(AuthContext);
-  const userData = JSON.parse(localStorage.getItem('userData')); // Mendapatkan data pengguna dari local storage
-  const userRole = userData ? userData.role : null; // Mengambil peran pengguna dari userData
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  const userRole = userData ? userData.role : null;
 
   if (loading) {
-    return <div>Loading...</div>; // Tampilkan indikator loading jika sedang memuat
+    // Menampilkan loading screen atau spinner saat memeriksa autentikasi
+    return <div>Loading...</div>;
   }
 
-  // Periksa apakah pengguna telah login dan memiliki peran yang sesuai
-  if (!isAuthenticated || !allowedRoles.includes(userRole)) {
-    return <Navigate to="/dashboard" />; // Redirect pengguna jika tidak memiliki akses
+  if (!isAuthenticated) {
+    // Jika pengguna belum login, arahkan ke halaman login
+    return <Navigate to="/" replace />;
   }
 
-  return children; // Tampilkan anak-anak jika pengguna memiliki akses
+  if (isAuthenticated && !allowedRoles.includes(userRole)) {
+    // Jika pengguna sudah login tetapi tidak memiliki akses ke halaman ini, arahkan ke dashboard
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  // Jika pengguna terautentikasi dan memiliki peran yang sesuai, tampilkan halaman yang diminta
+  return children;
 };
 
 export default ProtectedRoute;

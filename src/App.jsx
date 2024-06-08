@@ -13,6 +13,7 @@ import EditPasiens from "./page-list/EditPasiens";
 import ListPasien from "./page-list/ListPasien";
 import { AuthProvider } from "./context/authContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import NotFound from "./components/NotFound";
 
 function App() {
   return (
@@ -20,13 +21,19 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/" element={<Login />} />
-          {/* Dashboard dapat diakses oleh semua peran */}
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route 
+            path="/dashboard" 
+            element={
+              <ProtectedRoute allowedRoles={["Dokter", "Apoteker", "Admin"]}>
+                <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
           {/* Rute untuk dokter */}
           <Route
             path="/pasien"
             element={
-              <ProtectedRoute allowedRoles={['Dokter']}>
+              <ProtectedRoute allowedRoles={["Dokter"]}>
                 <Pasien />
               </ProtectedRoute>
             }
@@ -34,7 +41,7 @@ function App() {
           <Route
             path="/pasien/obat"
             element={
-              <ProtectedRoute allowedRoles={['Dokter']}>
+              <ProtectedRoute allowedRoles={["Dokter"]}>
                 <Obat />
               </ProtectedRoute>
             }
@@ -42,7 +49,7 @@ function App() {
           <Route
             path="/pasien/obat/resep"
             element={
-              <ProtectedRoute allowedRoles={['Dokter']}>
+              <ProtectedRoute allowedRoles={["Dokter"]}>
                 <Resep />
               </ProtectedRoute>
             }
@@ -51,7 +58,7 @@ function App() {
           <Route
             path="/history"
             element={
-              <ProtectedRoute allowedRoles={['Apoteker']}>
+              <ProtectedRoute allowedRoles={["Apoteker"]}>
                 <History />
               </ProtectedRoute>
             }
@@ -60,7 +67,7 @@ function App() {
           <Route
             path="/user"
             element={
-              <ProtectedRoute allowedRoles={['Admin']}>
+              <ProtectedRoute allowedRoles={["Admin"]}>
                 <Users />
               </ProtectedRoute>
             }
@@ -68,7 +75,7 @@ function App() {
           <Route
             path="/user/add"
             element={
-              <ProtectedRoute allowedRoles={['Admin']}>
+              <ProtectedRoute allowedRoles={["Admin"]}>
                 <AddUsers />
               </ProtectedRoute>
             }
@@ -76,7 +83,7 @@ function App() {
           <Route
             path="/user/edit/:id"
             element={
-              <ProtectedRoute allowedRoles={['Admin']}>
+              <ProtectedRoute allowedRoles={["Admin"]}>
                 <EditUsers />
               </ProtectedRoute>
             }
@@ -84,7 +91,7 @@ function App() {
           <Route
             path="/pasien/edit/:id"
             element={
-              <ProtectedRoute allowedRoles={['Admin']}>
+              <ProtectedRoute allowedRoles={["Admin"]}>
                 <EditPasiens />
               </ProtectedRoute>
             }
@@ -92,11 +99,13 @@ function App() {
           <Route
             path="/pasienlist"
             element={
-              <ProtectedRoute allowedRoles={['Admin']}>
+              <ProtectedRoute allowedRoles={["Admin"]}>
                 <ListPasien />
               </ProtectedRoute>
             }
           />
+          {/* Rute untuk 404 Not Found */}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

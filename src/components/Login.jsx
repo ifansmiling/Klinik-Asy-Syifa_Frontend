@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import api from "../services/api";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import Logo from "../Logo Klinik.png"; 
-import { useAuth } from "../context/authContext"; 
+import Logo from "../Logo Klinik.png";
+import { useAuth } from "../context/authContext";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,41 +21,49 @@ const Login = () => {
   };
 
   const handleLoginSuccess = (accessToken) => {
-    authLogin(accessToken);
-    navigate("/dashboard");
+    authLogin(accessToken); 
+    navigate("/dashboard"); 
   };
 
-  const loginUser = async () => { 
-    setLoading(true);
+  const loginUser = async () => {
+    setLoading(true); 
     try {
       console.log("Attempting to login with:", data);
       const response = await api.post("/login", {
         email: data.email,
         kata_sandi: data.kata_sandi,
       });
-      console.log("Login successful, response:", response.data);
-      localStorage.setItem("token", response.data.accessToken);
+
+      const accessToken = response.data.accessToken;
+
+      
+      localStorage.setItem("accessToken", accessToken);
+
+    
       const userData = {
         nama: response.data.nama,
         role: response.data.role,
       };
       localStorage.setItem("userData", JSON.stringify(userData));
+
       setLoading(false);
       setError(null);
-      handleLoginSuccess(response.data.accessToken);
+
+      
+      handleLoginSuccess(accessToken);
     } catch (error) {
-      console.error("Login failed, error:", error.response.data.message);
       setLoading(false);
-      setError(error.response.data.message);
+      setError(error.response?.data?.message || "Login failed, please try again.");
     }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken");
     if (token) {
+
       handleLoginSuccess(token);
     }
-  }, []); // Efek hanya dijalankan sekali setelah komponen dimuat
+  }, []); 
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-blue-50">
@@ -77,7 +85,7 @@ const Login = () => {
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                loginUser(); // Ganti pemanggilan fungsi menjadi loginUser
+                loginUser(); 
               }}
             >
               <div className="mb-4">
@@ -153,19 +161,19 @@ const Login = () => {
           </div>
         </div>
       </div>
-        <div className="mt-4 text-center text-gray-600 text-sm">
-          <div>
-            <span>
-              Klinik Asy-Syifa &copy; {new Date().getFullYear()} Lokasi: Desa
-              Randudongkal, Pemalang, Jawa Tengah, Indonesia
-            </span>
-          </div>
-          <div>
-            <span>
-              Layanan: Konsultasi Dokter Umum, Tes Darah, Cek Kesehatan, dll.
-            </span>
-          </div>
+      <div className="mt-4 text-center text-gray-600 text-sm">
+        <div>
+          <span>
+            Klinik Asy-Syifa &copy; {new Date().getFullYear()} Lokasi: Desa
+            Randudongkal, Pemalang, Jawa Tengah, Indonesia
+          </span>
         </div>
+        <div>
+          <span>
+            Layanan: Konsultasi Dokter Umum, Tes Darah, Cek Kesehatan, dll.
+          </span>
+        </div>
+      </div>
     </div>
   );
 };

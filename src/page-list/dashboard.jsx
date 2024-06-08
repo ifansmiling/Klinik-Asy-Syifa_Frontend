@@ -6,8 +6,9 @@ import {
   faProcedures,
   faPills,
   faClipboardCheck,
+  faArrowsRotate,
 } from "@fortawesome/free-solid-svg-icons";
-import api from "../services/api";
+import axios from "../services/api";
 
 const Dashboard = () => {
   const [patientsToday, setPatientsToday] = useState(0);
@@ -22,7 +23,7 @@ const Dashboard = () => {
       },
     ],
   });
-  const [setDailyChartData] = useState({
+  const [initialChartData, setInitialChartData] = useState({
     categories: [],
     series: [
       {
@@ -31,11 +32,12 @@ const Dashboard = () => {
       },
     ],
   });
+  const [isWeeklyView, setIsWeeklyView] = useState(true);
 
   useEffect(() => {
     const fetchPatientsToday = async () => {
       try {
-        const response = await api.get("/pasien/today/date");
+        const response = await axios.get("/pasien/today/date");
         const pasienList = response.data;
         setPatientsToday(pasienList.length);
       } catch (error) {
@@ -45,7 +47,7 @@ const Dashboard = () => {
 
     const fetchTotalResepHariIni = async () => {
       try {
-        const response = await api.get("/resep_obat/today/date");
+        const response = await axios.get("/resep_obat/today/date");
         const totalResep = response.data.totalResepObatHariIni;
         setTotalResepHariIni(totalResep);
       } catch (error) {
@@ -55,7 +57,7 @@ const Dashboard = () => {
 
     const fetchPatientsSelesaiHariIni = async () => {
       try {
-        const response = await api.get("/pasien/today/obat/selesai");
+        const response = await axios.get("/pasien/today/obat/selesai");
         const pasienList = response.data;
         setPatientsSelesaiHariIni(pasienList);
       } catch (error) {
@@ -75,7 +77,7 @@ const Dashboard = () => {
     console.log(maxDate);
     try {
       // Kirim permintaan ke server untuk mendapatkan data untuk tanggal yang diklik
-      const response = await api.get("/pasien/perhari-by-week/hari", {
+      const response = await axios.get("/pasien/perhari-by-week/hari", {
         params: {
           startOfWeek: minDate,
           endOfWeek: maxDate,
@@ -93,6 +95,8 @@ const Dashboard = () => {
           },
         ],
       });
+
+      setIsWeeklyView(false);
     } catch (error) {
       console.error("Error updating chart for clicked date:", error);
     }
@@ -101,7 +105,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("/pasien/today/obat/week/date");
+        const response = await axios.get("/pasien/today/obat/week/date");
         const data = response.data;
 
         const weeks = Object.keys(data);
@@ -116,10 +120,13 @@ const Dashboard = () => {
           pasienData.push(data[week].pasien); // Ubah data[week].patients menjadi data[week].pasien
         });
 
-        setChartData({
+        const initialData = {
           categories: categories,
           series: [{ name: "Pasien", data: pasienData }],
-        });
+        };
+
+        setChartData(initialData);
+        setInitialChartData(initialData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -127,6 +134,11 @@ const Dashboard = () => {
 
     fetchData();
   }, []);
+
+  const resetChart = () => {
+    setChartData(initialChartData);
+    setIsWeeklyView(true);
+  };
 
   return (
     <Layout>
@@ -186,7 +198,6 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-
         <div className="bg-white p-6 rounded-lg mb-4 duration-300 border border-blue-400">
           <div className="bg-white">
             <h3 className="text-xl font-semibold mb-8 border-b border-black">
@@ -203,7 +214,7 @@ const Dashboard = () => {
             <Chart
               options={{
                 markers: {
-                  size: 4,
+                  size: 5,
                 },
                 chart: {
                   height: 450,
@@ -212,15 +223,17 @@ const Dashboard = () => {
                   marginTop: 30,
                   events: {
                     click(event, chartContext, config) {
-                      const minDate =
-                        chartContext.w.globals.categoryLabels[
-                          config.dataPointIndex
-                        ].split(" - ")[0];
-                      const maxDate =
-                        chartContext.w.globals.categoryLabels[
-                          config.dataPointIndex
-                        ].split(" - ")[1];
-                      updateChartForClickedDate(minDate, maxDate);
+                      if (isWeeklyView) {
+                        const minDate =
+                          chartContext.w.globals.categoryLabels[
+                            config.dataPointIndex
+                          ].split(" - ")[0];
+                        const maxDate =
+                          chartContext.w.globals.categoryLabels[
+                            config.dataPointIndex
+                          ].split(" - ")[1];
+                        updateChartForClickedDate(minDate, maxDate);
+                      }
                     },
                   },
                 },
@@ -233,10 +246,10 @@ const Dashboard = () => {
                     zoomin: true,
                     zoomout: true,
                     pan: true,
-                    reset: true, 
+                    reset: true,
                     customIcons: [],
                   },
-                  autoSelected: "zoom", 
+                  autoSelected: "zoom",
                 },
                 dataLabels: {
                   enabled: false,
@@ -264,7 +277,7 @@ const Dashboard = () => {
                   offsetY: 20,
                   style: {
                     fontSize: "26px",
-                    fontFamily: "Robonto ",
+                    fontFamily: "Roboto",
                     fontWeight: "bold",
                     color: "#333",
                   },
@@ -274,6 +287,18 @@ const Dashboard = () => {
               type="area"
               height={350}
             />
+          </div>
+          <div className="mt-2 mb-4 mr-2">
+            <button
+              onClick={resetChart}
+              className="mb-2 bg-white text-black"
+              style={{ float: "right" }}
+            >
+              <FontAwesomeIcon
+                icon={faArrowsRotate}
+                style={{ color: "gray", fontSize: "0.9em" }}
+              />
+            </button>
           </div>
         </div>
       </div>
