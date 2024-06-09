@@ -127,40 +127,41 @@ function Sidebar() {
       isActive: activeMenu === "Dashboard",
       route: "/dashboard",
     },
-    role === "Dokter" && {
-      name: "Resep Obat",
-      isActive: activeMenu === "Resep Obat",
-      icon: <ChartPieIcon width={18} className="text-gray-600" />,
-      route: "/pasien",
+  ];
+
+  // Menentukan menu "Resep Obat" berdasarkan peran pengguna
+  const resepObatMenu =
+    role === "Dokter"
+      ? {
+          name: "Resep Obat",
+          isActive: activeMenu === "Resep Obat",
+          icon: <ChartPieIcon width={18} className="text-gray-600" />,
+          route: "/pasien",
+        }
+      : null;
+
+  // Menggabungkan menu-menu yang sesuai dengan peran pengguna
+  const menu2 = [
+    resepObatMenu,
+    role === "Apoteker" && {
+      name: "Riwayat Resep",
+      isActive: activeMenu === "Riwayat Resep",
+      icon: <ClipboardDocumentIcon width={18} className="text-gray-600" />,
+      route: "/history",
+    },
+    role == "Admin" && {
+      name: "Pasien",
+      isActive: activeMenu === "Pasien",
+      icon: <UserIcon width={18} className="text-gray-600" />,
+      route: "/pasienlist",
+    },
+    role === "Admin" && {
+      name: "Users",
+      isActive: activeMenu === "Users",
+      icon: <UsersIcon width={18} className="text-gray-600" />,
+      route: "/user",
     },
   ].filter(Boolean);
-
-  const menu2 =
-    role === "Apoteker"
-      ? [
-          {
-            name: "Riwayat Resep",
-            isActive: activeMenu === "Riwayat Resep",
-            icon: (
-              <ClipboardDocumentIcon width={18} className="text-gray-600" />
-            ),
-            route: "/history",
-          },
-        ]
-      : [
-          {
-            name: "Pasien",
-            isActive: activeMenu === "Pasien",
-            icon: <UserIcon width={18} className="text-gray-600" />,
-            route: "/pasienlist",
-          },
-          role === "Admin" && {
-            name: "Users",
-            isActive: activeMenu === "Users",
-            icon: <UsersIcon width={18} className="text-gray-600" />,
-            route: "/user",
-          },
-        ].filter(Boolean);
 
   const menu3 = [
     {
@@ -186,15 +187,13 @@ function Sidebar() {
               setActiveMenu={handleSetActiveMenu}
             />
           </div>
-          {role !== "Dokter" && (
-            <div className="border-b-2 border-yellow-100 text-sm">
-              <Menus
-                menu={menu2}
-                title={{ sm: "APPLICATION", xs: "APP" }}
-                setActiveMenu={handleSetActiveMenu}
-              />
-            </div>
-          )}
+          <div className="border-b-2 border-yellow-100 text-sm">
+            <Menus
+              menu={menu2}
+              title={{ sm: "APPLICATION", xs: "APP" }}
+              setActiveMenu={handleSetActiveMenu}
+            />
+          </div>
           <div className="border-b-2 border-yellow-100 text-sm">
             <Menus
               menu={menu3}

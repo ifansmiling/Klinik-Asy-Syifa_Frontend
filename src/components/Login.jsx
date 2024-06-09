@@ -21,49 +21,64 @@ const Login = () => {
   };
 
   const handleLoginSuccess = (accessToken) => {
-    authLogin(accessToken); 
-    navigate("/dashboard"); 
+    console.log(
+      "Login successful, navigating to dashboard with token:",
+      accessToken
+    );
+    authLogin(accessToken); // Memperbarui status autentikasi
+    navigate("/dashboard"); // Navigasi ke dashboard
   };
 
   const loginUser = async () => {
-    setLoading(true); 
+    setLoading(true);
+    setError(null); // Reset error sebelum memulai proses login
     try {
       console.log("Attempting to login with:", data);
       const response = await api.post("/login", {
         email: data.email,
         kata_sandi: data.kata_sandi,
       });
-      console.log("Login successful, response:", response.data);
-      localStorage.setItem("token", response.data.accessToken);
-      const userData = {
-        nama: response.data.nama,
-        role: response.data.role,
-      };
-      localStorage.setItem("userData", JSON.stringify(userData));
+      console.log("Login API response received:", response.data);
 
-      setLoading(false);
-      setError(null);
+      if (
+        response.data &&
+        response.data.accessToken &&
+        response.data.nama &&
+        response.data.role
+      ) {
+        const { accessToken, nama, role } = response.data;
+        localStorage.setItem("accessToken", accessToken);
+        const userData = { nama, role };
+        localStorage.setItem("userData", JSON.stringify(userData));
 
-      
-      handleLoginSuccess(accessToken);
+        setLoading(false);
+        handleLoginSuccess(accessToken); // Menggunakan accessToken yang baru saja diterima
+      } else {
+        throw new Error("Invalid response from server");
+      }
     } catch (error) {
+      console.error("Login failed:", error);
       setLoading(false);
-      setError(error.response?.data?.message || "Login failed, please try again.");
+      setError(
+        error.response?.data?.message || "Login failed, please try again."
+      );
     }
   };
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (token) {
-
+      console.log(
+        "Found existing token in localStorage, navigating to dashboard."
+      );
       handleLoginSuccess(token);
     }
-  }, []); 
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-blue-50">
-      <div className="max-w-4xl mx-auto p-4 border border-black-600 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex bg-white">
-        <div className="w-1/2 pr-4 border-r border-gray-400">
+      <div className="max-w-4xl mx-auto p-4 border border-black-600 rounded-lg shadow-lg hover:shadow-xl transition duration-300 flex flex-col md:flex-row bg-white">
+        <div className="md:w-1/2 pr-4 border-r border-gray-400">
           <div className="flex items-center mt-5 mb-4 border-b-2 border-indigo-200 pb-4">
             <img src={Logo} alt="Klinik Logo" className="h-20 mx-auto" />
           </div>
@@ -74,13 +89,13 @@ const Login = () => {
             </p>
           </div>
         </div>
-        <div className="w-1/2 pl-4">
-          <div className="p-4 bg-white">
+        <div className="md:w-1/2 pl-4">
+          <div className="p-4">
             <h2 className="text-2xl font-bold text-center mb-3">Login</h2>
             <form
               onSubmit={(e) => {
                 e.preventDefault();
-                loginUser(); 
+                loginUser();
               }}
             >
               <div className="mb-4">

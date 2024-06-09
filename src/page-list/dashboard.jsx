@@ -289,7 +289,6 @@ const Dashboard = () => {
             />
           </div>
           <div className="mt-2 mb-4 mr-2">
-<<<<<<< HEAD
             <button
               onClick={resetChart}
               className="mb-2 bg-white text-black"
@@ -300,18 +299,6 @@ const Dashboard = () => {
                 style={{ color: "gray", fontSize: "0.9em" }}
               />
             </button>
-=======
-          <button
-            onClick={resetChart}
-            className="mb-2 bg-white text-black"
-            style={{ float: "right" }}
-          >
-            <FontAwesomeIcon
-              icon={faArrowsRotate}
-              style={{ color: "gray", fontSize: "0.9em" }}
-            />
-          </button>
->>>>>>> 80cf2b3c741df18ac7d5c55f86d8461c53977870
           </div>
         </div>
       </div>
