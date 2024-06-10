@@ -28,7 +28,7 @@ const DetailResep = ({ pasienId, onClose, onProcessCompleted }) => {
   }, [statusUpdated, onProcessCompleted]);
 
   return (
-    <div className="text-center">
+    <div className="text-center mt-8">
       {!statusUpdated ? <div></div> : null}
       <Button
         onClick={handleSelesaiDibuat}

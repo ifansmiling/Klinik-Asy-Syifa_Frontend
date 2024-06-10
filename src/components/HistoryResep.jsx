@@ -308,7 +308,6 @@ const HistoryResep = () => {
           setFilteredInfo(filters);
         }}
       />
-
       <Modal
         title={<div className="text-center text-xl">Resep Obat Pasien</div>}
         open={modalVisible}
@@ -346,41 +345,47 @@ const HistoryResep = () => {
                 <h2 className="mb-1 text-l font-semibold text-left">
                   Data Obat {index + 1}
                 </h2>
-                <table className="w-full border border-collapse border-gray-300 mb-4">
+                <table className="w-full border border-collapse border-black mb-4">
                   <thead>
                     <tr>
-                      <th className="border border-gray-300 font-semibold p-2">
+                      <th className="border border-black font-semibold p-2">
                         No
                       </th>
-                      <th className="border border-gray-300 font-semibold p-2">
+                      <th className="border border-black font-semibold p-2">
                         Nama Obat
                       </th>
-                      <th className="border border-gray-300 font-semibold p-2">
-                        Jumlah
+                      <th className="border border-black font-semibold p-2">
+                        Jumlah Obat
                       </th>
-                      <th className="border border-gray-300 font-semibold p-2">
-                        Dosis
+                      <th className="border border-black font-semibold p-2">
+                        Bentuk Obat
                       </th>
-                      <th className="border border-gray-300 font-semibold p-2">
+                      <th className="border border-black font-semibold p-2">
+                        Dosis Obat
+                      </th>
+                      <th className="border border-black font-semibold p-2">
                         Cara Pakai
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td className="border border-gray-300 p-2 text-xs text-center">
+                      <td className="border border-black p-2 text-xs text-center">
                         {index + 1}
                       </td>
-                      <td className="border border-gray-300 p-2 text-xs text-center">
+                      <td className="border border-black p-2 text-xs text-center">
                         {obat.nama_obat}
                       </td>
-                      <td className="border border-gray-300 p-2 text-xs text-center">
+                      <td className="border border-black p-2 text-xs text-center">
                         {obat.jumlah_obat}
                       </td>
-                      <td className="border border-gray-300 p-2 text-xs text-center">
+                      <td className="border border-black p-2 text-xs text-center">
+                        {obat.bentuk_obat}
+                      </td>
+                      <td className="border border-black p-2 text-xs text-center">
                         {obat.dosis_obat}
                       </td>
-                      <td className="border border-gray-300 p-2 text-xs text-center">
+                      <td className="border border-black p-2 text-xs text-center">
                         {obat.cara_pakai}
                       </td>
                     </tr>
@@ -389,19 +394,19 @@ const HistoryResep = () => {
                 <h2 className="mb-1 text-l font-semibold text-left">
                   Data Resep Obat {index + 1}
                 </h2>
-                <table className="w-full border border-collapse border-gray-300 mb-4">
+                <table className="w-full border border-collapse border-black mb-4">
                   <thead>
                     <tr>
-                      <th className="border border-gray-300 font-semibold p-2">
+                      <th className="border border-black font-semibold p-2">
                         No
                       </th>
-                      <th className="border border-gray-300 font-semibold p-2">
+                      <th className="border border-black font-semibold p-2">
                         Nama Resep
                       </th>
-                      <th className="border border-gray-300 font-semibold p-2">
+                      <th className="border border-black font-semibold p-2">
                         Jumlah Resep
                       </th>
-                      <th className="border border-gray-300 font-semibold p-2">
+                      <th className="border border-black font-semibold p-2">
                         Bentuk Resep
                       </th>
                     </tr>
@@ -411,16 +416,16 @@ const HistoryResep = () => {
                     {selectedResepObatByObatId[obat.id]?.map(
                       (resep_obat, index) => (
                         <tr key={resep_obat.id}>
-                          <td className="border border-gray-300 p-2 text-xs text-center">
+                          <td className="border border-black p-2 text-xs text-center">
                             {index + 1}
                           </td>
-                          <td className="border border-gray-300 p-2 text-xs text-center">
+                          <td className="border border-black p-2 text-xs text-center">
                             {resep_obat.nama_resep}
                           </td>
-                          <td className="border border-gray-300 p-2 text-xs text-center">
+                          <td className="border border-black p-2 text-xs text-center">
                             {resep_obat.jumlah_resep}
                           </td>
-                          <td className="border border-gray-300 p-2 text-xs text-center">
+                          <td className="border border-black p-2 text-xs text-center">
                             {resep_obat.bentuk_resep}
                           </td>
                         </tr>
@@ -439,8 +444,7 @@ const HistoryResep = () => {
             onClose={handleCloseModal}
             onProcessCompleted={handleProcessCompleted}
           />
-
-          <div className="flex justify-center mt-6">
+          <div className="flex justify-center mt-9">
             <img src={Logo} className="h-8" alt="Klinik Logo" />
           </div>
           <div
