@@ -1,22 +1,67 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@keyframes wiggle {
-    25% {
-      transform: rotate(-10deg);
-    }
-    50% {
-      transform: rotate(10deg);
-    }
-    75% {
-      transform: rotate(-5deg);
-    }
-    100% {
-      transform: rotate(5deg);
-    }
+
+@media print {
+  .ant-modal,
+  .ant-modal-content,
+  .ant-modal-body {
+    box-shadow: none !important; /* Menghilangkan bayangan */
+    background-color: white !important; /* Menetapkan latar belakang putih */
   }
-  
-  .animate-wiggle {
-    animation: wiggle 0.5s ease-in-out;
+
+  body > :not(.print-visible):first-child {
+    display: none; /* Menyembunyikan elemen pertama yang tidak ingin dicetak */
   }
-  
+
+  @page {
+    size: A4; /* Atur ukuran kertas menjadi A4 */
+    margin: 0; /* Atur margin menjadi 0 untuk memaksimalkan area cetakan */
+  }
+
+  body {
+    margin: 0; /* Pastikan margin body juga 0 */
+    background-color: white !important; /* Latar belakang putih penuh */
+  }
+
+  /* Sembunyikan elemen yang tidak ingin dicetak */
+  .print-hidden {
+    display: none;
+  }
+
+  /* Tampilkan elemen yang ingin dicetak */
+  .print-visible {
+    display: block !important;
+  }
+
+  .ant-modal-close-x {
+    display: none !important; /* Menyembunyikan tombol penutup modal */
+  }
+
+  /* Menyembunyikan bayangan bawah modal */
+  .ant-modal {
+    border: none !important;
+  }
+
+  .ant-modal-mask {
+    display: none !important; /* Menyembunyikan overlay modal */
+  }
+
+  /* Mengatur posisi modal agar lebih sesuai untuk cetakan */
+  .ant-modal-content {
+    margin: 0 !important; /* Menghilangkan margin untuk modal */
+    padding: 0 !important; /* Menghilangkan padding untuk modal */
+  }
+
+  .ant-modal-body {
+    margin: auto; /* Pusatkan modal */
+    width: auto; /* Sesuaikan lebar modal */
+    min-width: unset !important; /* Menghilangkan batas lebar minimum */
+  }
+
+  /* Untuk memastikan tidak ada bayangan atau elemen aneh di sekitar konten cetak */
+  .ant-modal {
+    box-shadow: none !important;
+    background: white !important;
+  }
+}

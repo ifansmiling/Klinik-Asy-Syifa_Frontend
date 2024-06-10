@@ -315,7 +315,9 @@ const HistoryResep = () => {
         onCancel={handleCloseModal}
         footer={null}
         centered
-        width={700}
+        width={800}
+        closable={true}
+        style={{ height: "90vh", overflowY: "auto" }}
       >
         <div className="p-4 text-xs max-h-[1000px] overflow-y-auto">
           {selectedPasienData && (
