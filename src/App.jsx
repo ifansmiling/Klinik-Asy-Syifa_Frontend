@@ -21,13 +21,13 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route 
-            path="/dashboard" 
+          <Route
+            path="/dashboard"
             element={
               <ProtectedRoute allowedRoles={["Dokter", "Apoteker", "Admin"]}>
                 <Dashboard />
               </ProtectedRoute>
-            } 
+            }
           />
           {/* Rute untuk dokter */}
           <Route
@@ -81,7 +81,7 @@ function App() {
             }
           />
           <Route
-            path="/user/edit/:id"
+            path="/users/edit/:id"
             element={
               <ProtectedRoute allowedRoles={["Admin"]}>
                 <EditUsers />

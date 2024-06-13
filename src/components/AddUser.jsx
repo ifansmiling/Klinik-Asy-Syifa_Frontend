@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import api from "../services/api";
-import { AiOutlineLoading3Quarters, AiOutlineEye, AiOutlineEyeInvisible, AiOutlineCheckCircle } from "react-icons/ai"; // Import ikon mata sandi
+import {
+  AiOutlineLoading3Quarters,
+  AiOutlineEye,
+  AiOutlineEyeInvisible,
+  AiOutlineCheckCircle,
+} from "react-icons/ai"; // Import ikon mata sandi
 import { useNavigate } from "react-router-dom";
 
 const AddUser = () => {
@@ -14,7 +19,7 @@ const AddUser = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
 
   const [roleList, setRoleList] = useState();
 
@@ -63,14 +68,15 @@ const AddUser = () => {
     <div className="w-full p-5 rounded-lg font-inter bg-white border border-yellow-300 mt-8">
       <div className="">
         <div className="">
-          <h2 className="text-xl font-semibold mb-6 mt-4 text-center">Add User</h2>
+          <h2 className="text-xl font-semibold mb-6 mt-4 text-center">
+            Add User
+          </h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label
                   htmlFor="nama"
                   className="text-sm font-medium text-gray-700"
-                  
                 >
                   Nama
                 </label>
@@ -78,7 +84,7 @@ const AddUser = () => {
                   type="text"
                   id="nama"
                   name="nama"
-                  placeholder="Contoh: Admin"
+                  placeholder="Contoh: Dokter"
                   value={formData.nama}
                   onChange={handleChange}
                   className="mt-1 block w-full px-3 py-2 border border-yellow-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs"
@@ -89,7 +95,6 @@ const AddUser = () => {
                 <label
                   htmlFor="email"
                   className="text-sm font-medium text-gray-700"
-                  
                 >
                   Email
                 </label>
@@ -101,7 +106,7 @@ const AddUser = () => {
                   onChange={handleChange}
                   className="mt-1 block w-full px-3 py-2 border border-yellow-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 text-xs"
                   required
-                  placeholder="Contoh: admin@gmail.com"
+                  placeholder="Contoh: dokter@gmail.com"
                 />
               </div>
             </div>
@@ -110,7 +115,6 @@ const AddUser = () => {
                 <label
                   htmlFor="kata_sandi"
                   className="text-sm font-medium text-gray-700"
-                 
                 >
                   Kata Sandi
                 </label>
@@ -131,7 +135,11 @@ const AddUser = () => {
                     onClick={() => setShowPassword(!showPassword)} // Toggle state showPassword saat ikon mata diklik
                     className="absolute inset-y-0 right-0 flex items-center px-2 text-gray-500"
                   >
-                    {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+                    {showPassword ? (
+                      <AiOutlineEye />
+                    ) : (
+                      <AiOutlineEyeInvisible />
+                    )}
                   </button>
                 </div>
               </div>
@@ -179,7 +187,10 @@ const AddUser = () => {
               {error ? (
                 <p className="text-red-400 ">{error}</p>
               ) : success ? (
-                <p className="text-green-400 flex items-center"><AiOutlineCheckCircle className="mr-2" />User berhasil ditambahkan</p>
+                <p className="text-green-400 flex items-center">
+                  <AiOutlineCheckCircle className="mr-2" />
+                  User berhasil ditambahkan
+                </p>
               ) : null}
             </section>
           </form>

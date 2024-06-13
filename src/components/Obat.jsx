@@ -139,7 +139,7 @@ const Obat = () => {
   };
 
   return (
-    <div className="flex mt-5 justify-center font-sans ">
+    <div className="flex mt-5 justify-center font-sans">
       <div className="w-full p-5 rounded-lg font-inter bg-white border border-yellow-300">
         <div className="">
           <h1 className="text-lg font-semibold mb-6 mt-2 text-center">
@@ -175,10 +175,13 @@ const Obat = () => {
             </Select>
           </div>
           <form onSubmit={handleSubmit} className="px-9 py-1">
-            <div className="gap-y-1 py-4 grid grid-cols-1 gap-x-3">
+            <div className="grid gap-4 gap-y-4 py-4 sm:grid-cols-1">
               {[...Array(additionalFields)].map((_, index) => (
-                <div key={index} className="grid gap-y-2 grid-cols-2">
-                  <div className="flex flex-col col-span-2 sm:col-span-1 ">
+                <div
+                  key={index}
+                  className="grid grid-cols-1 gap-y-4 gap-x-4 sm:grid-cols-1 md:grid-cols-2"
+                >
+                  <div className="flex flex-col col-span-1">
                     <label
                       htmlFor={`nama-obat-${index}`}
                       className="text-sm font-medium text-gray-700"
@@ -188,7 +191,7 @@ const Obat = () => {
                     <input
                       type="text"
                       id={`nama-obat-${index}`}
-                      className="mt-1  px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
+                      className="mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
                       placeholder="Contoh: Bodrex"
                       value={namaObatList[index]}
                       onChange={(e) => {
@@ -203,17 +206,17 @@ const Obat = () => {
                       </p>
                     )}
                   </div>
-                  <div className="flex flex-col col-span-2 sm:col-span-1">
+                  <div className="flex flex-col col-span-1">
                     <label
                       htmlFor={`jumlah-${index}`}
-                      className="ml-3 text-sm font-medium text-gray-700"
+                      className="text-sm font-medium text-gray-700"
                     >
                       Jumlah Obat {index + 1}
                     </label>
                     <input
                       type="text"
                       id={`jumlah-${index}`}
-                      className="mt-1 ml-3 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
+                      className="mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
                       placeholder="Contoh: 10"
                       value={jumlahObatList[index]}
                       onChange={(e) => {
@@ -228,7 +231,7 @@ const Obat = () => {
                       </p>
                     )}
                   </div>
-                  <div className="flex flex-col col-span-2 sm:col-span-1">
+                  <div className="flex flex-col col-span-1">
                     <label
                       htmlFor={`bentuk-obat-${index}`}
                       className="text-sm font-medium text-gray-700"
@@ -238,7 +241,7 @@ const Obat = () => {
                     <input
                       type="text"
                       id={`bentuk-obat-${index}`}
-                      className="mt-1  px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
+                      className="mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
                       placeholder="Contoh: Tablet, Sirup, Kapsul"
                       value={bentukObatList[index]}
                       onChange={(e) => {
@@ -253,17 +256,17 @@ const Obat = () => {
                       </p>
                     )}
                   </div>
-                  <div className="flex flex-col col-span-2 sm:col-span-1">
+                  <div className="flex flex-col col-span-1">
                     <label
                       htmlFor={`dosis-${index}`}
-                      className="text-sm ml-3 font-medium text-gray-700"
+                      className="text-sm font-medium text-gray-700"
                     >
                       Dosis Obat {index + 1}
                     </label>
                     <input
                       type="text"
                       id={`dosis-${index}`}
-                      className="mt-1 ml-3 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
+                      className="mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
                       placeholder="Contoh: 3 kali sehari"
                       value={dosisObatList[index]}
                       onChange={(e) => {
@@ -278,7 +281,7 @@ const Obat = () => {
                       </p>
                     )}
                   </div>
-                  <div className="flex flex-col col-span-2 sm:col-span-1 mb-2">
+                  <div className="flex flex-col col-span-1 mb-2">
                     <label
                       htmlFor={`penggunaan-${index}`}
                       className="text-sm font-medium text-gray-700"
@@ -287,7 +290,7 @@ const Obat = () => {
                     </label>
                     <textarea
                       id={`penggunaan-${index}`}
-                      className="mt-1  px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
+                      className="mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
                       placeholder="Contoh: Diminum setelah makan"
                       rows="3"
                       value={caraPakaiList[index]}

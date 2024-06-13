@@ -145,15 +145,15 @@ const Resep = () => {
 
   return (
     <div className="flex mt-5 justify-center font-sans">
-      <div className="w-full p-3 rounded-lg font-inter bg-white border border-yellow-300">
+      <div className="w-full max-w-lg p-5 rounded-lg font-inter bg-white border border-yellow-300">
         <div className="">
           <h1 className="text-lg font-semibold mb-4 text-center">
             Form Resep Obat
           </h1>
-          <form onSubmit={handleSubmit} className="px-9 py-7">
+          <form onSubmit={handleSubmit} className="px-4 py-4">
             {data.map((resep, index) => (
-              <div key={index} className="grid gap-y-4 grid-cols-2 mb-8">
-                <div className="mt-2 ml-4">
+              <div key={index} className="grid gap-y-4 mb-8">
+                <div className="flex flex-col">
                   <label
                     htmlFor={`obat-${index}`}
                     className="text-sm font-medium text-gray-700"
@@ -161,13 +161,12 @@ const Resep = () => {
                     Cari Obat {index + 1}
                   </label>
                   <Select
-                    className="mt-2"
+                    className="mt-2 w-full"
                     showSearch
                     placeholder="Cari Obat"
                     optionFilterProp="children"
                     onChange={(value) => onChange(value, index)}
                     value={selectedObatIds[index]}
-                    style={{ width: 400 }}
                     dropdownStyle={{
                       maxHeight: `${dropdownMaxHeight}px`,
                       overflowY: "auto",
@@ -186,11 +185,10 @@ const Resep = () => {
                 <div className="flex flex-col">
                   <label
                     htmlFor={`nama-resep-${index}`}
-                    className="text-sm ml-3 mb-2 font-medium text-gray-700"
+                    className="text-sm font-medium text-gray-700"
                   >
                     Nama Resep {index + 1}
                   </label>
-                  <div className="mt-1"></div>
                   <input
                     value={resep.nama_resep}
                     onChange={(e) =>
@@ -198,14 +196,14 @@ const Resep = () => {
                     }
                     type="text"
                     id={`nama-resep-${index}`}
-                    className="mt-1 ml-3 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
+                    className="mt-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300 w-full"
                     placeholder="Contoh: Amoxilin"
                   />
                 </div>
-                <div className="mt-1 ml-3 flex flex-col">
+                <div className="flex flex-col">
                   <label
                     htmlFor={`jumlah-resep-${index}`}
-                    className="text-sm font-medium mb-2 text-gray-700"
+                    className="text-sm font-medium text-gray-700"
                   >
                     Jumlah Resep {index + 1}
                   </label>
@@ -216,14 +214,14 @@ const Resep = () => {
                     }
                     type="text"
                     id={`jumlah-resep-${index}`}
-                    className="mt-1  px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
+                    className="mt-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300 w-full"
                     placeholder="Contoh: 100mg"
                   />
                 </div>
                 <div className="flex flex-col">
                   <label
                     htmlFor={`bentuk-resep-${index}`}
-                    className="text-sm mt-1 ml-3 mb-2 font-medium text-gray-700"
+                    className="text-sm font-medium text-gray-700"
                   >
                     Bentuk Resep {index + 1}
                   </label>
@@ -234,7 +232,7 @@ const Resep = () => {
                     }
                     type="text"
                     id={`bentuk-resep-${index}`}
-                    className="mt-1 ml-3 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
+                    className="mt-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300 w-full"
                     placeholder="Contoh: Tablet, Sirup, Kapsul"
                   />
                 </div>
@@ -242,36 +240,37 @@ const Resep = () => {
                   <button
                     type="button"
                     onClick={() => removeField(index)}
-                    className="ml-3 mt-1 flex items-center text-red-500"
+                    className="mt-2 text-red-500 self-end"
                   >
                     Hapus Resep
                   </button>
                 )}
               </div>
             ))}
-            <div className="flex justify-end mt-1">
-              <section className="text-sm grid w-full place-items-center pt-4">
-                {error && <p className="text-red-400 ">{error}</p>}
-                {success && (
-                  <p className="text-green-400">
-                    Berhasil Menambahkan Data Resep Obat
-                  </p>
-                )}
-              </section>
-            </div>
-            <button
-              type="button"
-              onClick={addField}
-              className="ml-2 mt-3 flex items-center text-blue-500"
-            >
-              <AiOutlinePlusCircle className="mr-1" />
-              Tambah Resep
-            </button>
-            <div className="flex justify-center bg-blue-300 py-1 px-0 rounded-lg mb-2 mt-2">
-              <button type="submit" className="hover:underline cursor-pointer">
-                <span className="text-black-600">Simpan</span>
+            <div className="flex justify-end mt-4">
+              <button
+                type="button"
+                onClick={addField}
+                className="flex items-center text-blue-500"
+              >
+                <AiOutlinePlusCircle className="mr-1" />
+                Tambah Resep
               </button>
             </div>
+            <div className="mt-4">
+              <button
+                type="submit"
+                className="w-full py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition"
+              >
+                Simpan
+              </button>
+            </div>
+            {error && <p className="text-red-400 mt-4 text-center">{error}</p>}
+            {success && (
+              <p className="text-green-400 mt-4 text-center">
+                Berhasil Menambahkan Data Resep Obat
+              </p>
+            )}
           </form>
           {showConfirmationPopup && (
             <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">

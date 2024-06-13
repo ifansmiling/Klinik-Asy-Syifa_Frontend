@@ -19,6 +19,8 @@
     "apexcharts": "^3.49.1",
     "axios": "^1.6.8",
     "chart.js": "^4.4.3",
+    "cloudinary": "^2.2.0",
+    "cloudinary-react": "^1.8.1",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "react": "^18.2.0",

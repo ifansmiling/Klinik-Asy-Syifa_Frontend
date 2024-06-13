@@ -76,7 +76,6 @@ const Dashboard = () => {
     console.log(minDate);
     console.log(maxDate);
     try {
-      // Kirim permintaan ke server untuk mendapatkan data untuk tanggal yang diklik
       const response = await axios.get("/pasien/perhari-by-week/hari", {
         params: {
           startOfWeek: minDate,
@@ -85,7 +84,6 @@ const Dashboard = () => {
       });
       const newData = response.data;
 
-      // Update state chartData dengan data baru
       setChartData({
         categories: Object.keys(newData),
         series: [
@@ -112,12 +110,11 @@ const Dashboard = () => {
         const pasienData = [];
         const categories = [];
 
-        // Ambil data untuk 7 minggu terakhir
         const last7Weeks = weeks.slice(-7);
 
         last7Weeks.forEach((week) => {
-          categories.push(week); // Menggunakan label minggu sebagai kategori
-          pasienData.push(data[week].pasien); // Ubah data[week].patients menjadi data[week].pasien
+          categories.push(week);
+          pasienData.push(data[week].pasien);
         });
 
         const initialData = {
@@ -152,12 +149,12 @@ const Dashboard = () => {
           ada. Kami berkomitmen untuk memberikan pelayanan terbaik kepada setiap
           pasien dan keluarga mereka.
         </p>
-        <p className="text-lg mb-5">
+        <p className="text-lg mb-5 text-justify">
           Berikut Informasi tentang pasien dan juga resep yang sedang dibuat
           hari ini:
         </p>
-        <div className="flex justify-center space-x-4 mb-8">
-          <div className="flex flex-col bg-gradient-to-r from-white to-blue-200 p-6 rounded-lg text-center w-full md:w-1/3 shadow-md hover:shadow-lg border border-black text-black transform transition-transform ">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <div className="flex flex-col bg-gradient-to-r from-white to-blue-200 p-6 rounded-lg text-center shadow-md hover:shadow-lg border border-black text-black transform transition-transform ">
             <h3 className="text-lg md:text-xl font-semibold mb-2">
               Jumlah Pasien Hari ini
             </h3>
@@ -170,7 +167,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="flex flex-col bg-gradient-to-r from-white to-yellow-400 p-6 rounded-lg text-center w-full md:w-1/3 shadow-md hover:shadow-lg border border-black text-black transform transition-transform ">
+          <div className="flex flex-col bg-gradient-to-r from-white to-yellow-400 p-6 rounded-lg text-center shadow-md hover:shadow-lg border border-black text-black transform transition-transform ">
             <h3 className="text-lg md:text-xl font-semibold mb-2">
               Total Resep Obat Hari ini
             </h3>
@@ -183,7 +180,7 @@ const Dashboard = () => {
             </div>
           </div>
 
-          <div className="flex flex-col bg-gradient-to-r from-white to-blue-400 p-6 rounded-lg text-center w-full md:w-1/3 shadow-md hover:shadow-lg border border-black text-black transform transition-transform">
+          <div className="flex flex-col bg-gradient-to-r from-white to-blue-400 p-6 rounded-lg text-center shadow-md hover:shadow-lg border border-black text-black transform transition-transform">
             <h3 className="text-lg md:text-xl font-semibold mb-2">
               Resep Selesai Hari ini
             </h3>
@@ -305,5 +302,5 @@ const Dashboard = () => {
     </Layout>
   );
 };
-
+  
 export default Dashboard;

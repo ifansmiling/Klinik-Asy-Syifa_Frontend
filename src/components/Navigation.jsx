@@ -16,25 +16,33 @@ function Navbar() {
     role: "",
   });
 
-  const [selectedPhoto, setSelectedPhoto] = useState("/Default Foto.jpg"); // Default photo path
+  const [selectedPhoto, setSelectedPhoto] = useState("");
 
   useEffect(() => {
     const storedUserData = JSON.parse(localStorage.getItem("userData"));
     if (storedUserData) {
       setUserData(storedUserData);
-    }
+      let rolePhoto = "";
+      switch (storedUserData.role) {
+        case "Dokter":
+          rolePhoto = "/Dokter.jpg";
+          break;
+        case "Apoteker":
+          rolePhoto = "/Apoteker.jpg";
+          break;
+        case "Admin":
+          rolePhoto = "/Administrator.jpg";
+          break;
+        default:
+          rolePhoto = ""; // Foto default jika peran tidak cocok
+          break;
+      }
 
-    const storedPhoto = localStorage.getItem(
-      `selectedPhoto_${storedUserData?.role}_${storedUserData?.nama}`
-    );
-    if (storedPhoto) {
-      setSelectedPhoto(storedPhoto);
+      if (rolePhoto) {
+        setSelectedPhoto(rolePhoto);
+      }
     }
   }, []);
-
-  const handleProfileClick = () => {
-    document.getElementById("file-input").click();
-  };
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -43,6 +51,8 @@ function Navbar() {
       reader.onload = (e) => {
         const selectedPhotoDataUrl = e.target.result;
         setSelectedPhoto(selectedPhotoDataUrl);
+
+        // Simpan foto sesuai dengan peran pengguna ke localStorage
         localStorage.setItem(
           `selectedPhoto_${userData.role}_${userData.nama}`,
           selectedPhotoDataUrl
@@ -73,12 +83,9 @@ function Navbar() {
               className="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
               id="user-menu-button"
               aria-expanded="false"
-              data-dropdown-toggle="user-dropdown"
-              data-dropdown-placement="bottom"
-              onClick={handleProfileClick}
             >
               <img
-                className="w-8 h-8 rounded-full"
+                className="w-8 h-8 rounded-full pointer-events-none" // Menonaktifkan event click
                 src={selectedPhoto}
                 alt="Profile"
               />
