@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @media print {
   .ant-modal,
   .ant-modal-content,
@@ -27,7 +26,7 @@
 
   /* Sembunyikan elemen yang tidak ingin dicetak */
   .print-hidden {
-    display: none;
+    display: none !important;
   }
 
   /* Tampilkan elemen yang ingin dicetak */

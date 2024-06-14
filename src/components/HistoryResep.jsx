@@ -237,6 +237,7 @@ const HistoryResep = () => {
       ),
       render: (text) => <a style={{ textAlign: "center" }}>{text}</a>,
       ellipsis: true,
+      responsive: ["xs", "sm", "md", "lg"],
     },
     {
       title: "Tanggal Berobat",
@@ -245,6 +246,7 @@ const HistoryResep = () => {
       sorter: (a, b) =>
         new Date(b.tanggal_berobat) - new Date(a.tanggal_berobat),
       className: "border border-yellow-200",
+      responsive: ["xs", "sm", "md", "lg"],
     },
     {
       title: "Dokter",
@@ -252,6 +254,7 @@ const HistoryResep = () => {
       key: "dokter",
       ellipsis: true,
       className: "border border-yellow-200 ",
+      responsive: ["xs", "sm", "md", "lg"],
     },
     {
       title: "Proses Resep",
@@ -269,6 +272,7 @@ const HistoryResep = () => {
         }
       },
       className: "border border-yellow-200",
+      responsive: ["xs", "sm", "md", "lg"],
     },
     {
       title: "Aksi",
@@ -284,6 +288,7 @@ const HistoryResep = () => {
         </Button>
       ),
       className: "border border-yellow-200",
+      responsive: ["xs", "sm", "md", "lg"],
     },
   ];
 
@@ -304,9 +309,10 @@ const HistoryResep = () => {
             item.nama_pasien.toLowerCase().includes(searchText.toLowerCase())
         )}
         pagination={{ pageSize: 4 }}
-        onChange={(pagination, filters, sorter) => {
+        onChange={(filters) => {
           setFilteredInfo(filters);
         }}
+        scroll={{ x: true }}
       />
       <Modal
         title={<div className="text-center text-xl">Resep Obat Pasien</div>}
@@ -341,11 +347,11 @@ const HistoryResep = () => {
           )}
           {selectedObatData &&
             selectedObatData.map((obat, index) => (
-              <div key={obat.id}>
+              <div key={obat.id} className="mb-8 overflow-x-auto">
                 <h2 className="mb-1 text-l font-semibold text-left">
                   Data Obat {index + 1}
                 </h2>
-                <table className="w-full border border-collapse border-black mb-4">
+                <table className="min-w-full table-auto border border-collapse border-black mb-4">
                   <thead>
                     <tr>
                       <th className="border border-black font-semibold p-2">
@@ -373,7 +379,7 @@ const HistoryResep = () => {
                       <td className="border border-black p-2 text-xs text-center">
                         {index + 1}
                       </td>
-                      <td className="border border-black p-2 text-xs text-center">
+                      <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
                         {obat.nama_obat}
                       </td>
                       <td className="border border-black p-2 text-xs text-center">
@@ -385,16 +391,18 @@ const HistoryResep = () => {
                       <td className="border border-black p-2 text-xs text-center">
                         {obat.dosis_obat}
                       </td>
-                      <td className="border border-black p-2 text-xs text-center">
+                      <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
                         {obat.cara_pakai}
                       </td>
                     </tr>
                   </tbody>
                 </table>
+
+                {/* Tabel Resep Obat */}
                 <h2 className="mb-1 text-l font-semibold text-left">
                   Data Resep Obat {index + 1}
                 </h2>
-                <table className="w-full border border-collapse border-black mb-4">
+                <table className="min-w-full table-auto border border-collapse border-black mb-4">
                   <thead>
                     <tr>
                       <th className="border border-black font-semibold p-2">
@@ -419,7 +427,7 @@ const HistoryResep = () => {
                           <td className="border border-black p-2 text-xs text-center">
                             {index + 1}
                           </td>
-                          <td className="border border-black p-2 text-xs text-center">
+                          <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
                             {resep_obat.nama_resep}
                           </td>
                           <td className="border border-black p-2 text-xs text-center">
@@ -435,7 +443,6 @@ const HistoryResep = () => {
                 </table>
               </div>
             ))}
-
           <DetailResep
             pasienId={selectedPasienId} // Contoh penerusan data pasienId
             selectedPasienData={selectedPasienData} // Meneruskan data pasien

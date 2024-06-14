@@ -3,7 +3,7 @@ import api from "../services/api";
 import { message, Button } from "antd";
 import { PrinterOutlined } from "@ant-design/icons";
 
-const DetailResep = ({ pasienId, onClose, onProcessCompleted }) => {
+const DetailResep = ({ pasienId, onProcessCompleted }) => {
   const [statusUpdated, setStatusUpdated] = useState(false);
 
   const handleSelesaiDibuat = async () => {
@@ -30,21 +30,25 @@ const DetailResep = ({ pasienId, onClose, onProcessCompleted }) => {
   return (
     <div className="text-center mt-8">
       {!statusUpdated ? <div></div> : null}
-      <Button
-        onClick={handleSelesaiDibuat}
-        className="bg-green-500 hover:bg-green-700 text-white font-arial py-1 px-4 rounded mr-4 print-hidden"
-      >
-        Selesai Dibuat
-      </Button>
-      <Button
-        onClick={handleCetakResep}
-        icon={<PrinterOutlined />}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-arial py-1 px-4 rounded print-hidden "
-      >
-        Cetak Resep
-      </Button>
+      <div className="flex flex-col md:flex-row justify-center items-center">
+        <Button
+          onClick={handleSelesaiDibuat}
+          className="bg-green-500 hover:bg-green-700 text-white font-arial py-1 px-4 rounded mb-2 md:mb-0 md:mr-4 print-hidden"
+        >
+          Selesai Dibuat
+        </Button>
+        <Button
+          onClick={handleCetakResep}
+          icon={<PrinterOutlined />}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-arial py-1 px-4 rounded print-hidden"
+        >
+          Cetak Resep
+        </Button>
+      </div>
     </div>
   );
 };
 
 export default DetailResep;
+
+// Tambahkan ini dalam CSS atau di file CSS yang terhubung

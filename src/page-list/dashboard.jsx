@@ -233,6 +233,22 @@ const Dashboard = () => {
                       }
                     },
                   },
+                  zoom: {
+                    enabled: true,
+                    type: "x", // Enables zooming along the x-axis
+                    autoScaleYaxis: true,
+                  },
+                  pan: {
+                    enabled: true,
+                    mode: "x", // Allows panning along the x-axis
+                  },
+                  scrollbar: {
+                    enabled: true,
+                    barHeight: 20,
+                    handle: {
+                      background: "#008FFB",
+                    },
+                  },
                 },
                 toolbar: {
                   show: true,
@@ -251,14 +267,25 @@ const Dashboard = () => {
                 dataLabels: {
                   enabled: false,
                 },
-
                 stroke: {
                   curve: "smooth",
                 },
                 xaxis: {
                   categories: chartData.categories,
+                  scrollbar: {
+                    show: true,
+                    height: 20,
+                    borderColor: "#333",
+                    barHeight: 20,
+                    handle: {
+                      show: true,
+                      color: "#008FFB",
+                    },
+                    track: {
+                      background: "#f0f0f0",
+                    },
+                  },
                 },
-
                 tooltip: {
                   shared: false,
                   intersect: true,
@@ -279,12 +306,28 @@ const Dashboard = () => {
                     color: "#333",
                   },
                 },
+                responsive: [
+                  {
+                    breakpoint: 1000,
+                    options: {
+                      chart: {
+                        height: 300,
+                      },
+                      title: {
+                        style: {
+                          fontSize: "15px",
+                        },
+                      },
+                    },
+                  },
+                ],
               }}
               series={chartData.series}
               type="area"
               height={350}
             />
           </div>
+
           <div className="mt-2 mb-4 mr-2">
             <button
               onClick={resetChart}
@@ -302,5 +345,5 @@ const Dashboard = () => {
     </Layout>
   );
 };
-  
+
 export default Dashboard;
