@@ -106,6 +106,7 @@ const UserList = () => {
       sorter: (a, b) => a.nama.localeCompare(b.nama),
       sortOrder: sortedInfo.columnKey === "nama" ? sortedInfo.order : null,
       ellipsis: true,
+      responsive: ["xs", "sm", "md", "lg"],
     },
     {
       title: "Email",
@@ -113,6 +114,7 @@ const UserList = () => {
       key: "email",
       className: "border border-yellow-100",
       ellipsis: true,
+      responsive: ["xs", "sm", "md", "lg"],
     },
     {
       title: "Role",
@@ -123,6 +125,7 @@ const UserList = () => {
       filteredValue: filteredInfo.role || null,
       onFilter: (value, record) => record.role === value,
       ellipsis: true,
+      responsive: ["xs", "sm", "md", "lg"],
     },
     {
       title: "Active",
@@ -145,12 +148,13 @@ const UserList = () => {
       filteredValue: filteredInfo.active || null,
       onFilter: (value, record) => record.active === value,
       ellipsis: true,
+      responsive: ["xs", "sm", "md", "lg"],
     },
 
     {
       title: "Aksi",
       key: "action",
-      className: "border border-yellow-100",
+      className: "border border-yellow-100 text-center",
       render: (record) => (
         <Space size="middle">
           <Link
@@ -207,8 +211,10 @@ const UserList = () => {
   return (
     <div>
       <div className="mt-7 text-center">
-        <h1 className="mb-4 font-semibold text-lg">Semua Pengguna</h1>
-        <div className="flex justify-center space-x-4 items-center mb-4">
+        <h1 className="mb-4 font-semibold text-lg md:text-xl lg:text-2xl">
+          Semua Pengguna
+        </h1>
+        <div className="flex flex-col sm:flex-row justify-center space-y-2 sm:space-y-0 sm:space-x-4 items-center mb-4">
           <Button
             onClick={clearFilters}
             className="mt-1 flex items-center justify-center"
@@ -244,9 +250,10 @@ const UserList = () => {
               columns={columns}
               dataSource={paginatedUsers}
               onChange={handleChange}
-              pagination={false} 
+              pagination={false}
+              scroll={{ x: true }}
             />
-            <div className="flex justify-end mt-4">
+            <div className="flex flex-wrap justify-center md:justify-end mt-4 px-4">
               <Pagination
                 current={currentPage}
                 total={users.length}

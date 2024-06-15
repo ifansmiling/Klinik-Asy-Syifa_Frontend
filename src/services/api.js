@@ -7,7 +7,7 @@ const api = axios.create({
   },
 });
 
-// Interceptor untuk menangkap respons dan menyimpan token ke sessionStorage
+// Interceptor untuk menangkap respons dan menyimpan token ke localStorage
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("accessToken");

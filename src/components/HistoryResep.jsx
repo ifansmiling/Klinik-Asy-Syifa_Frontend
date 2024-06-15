@@ -295,8 +295,10 @@ const HistoryResep = () => {
   return (
     <>
       <div className="text-center mr-10 mb-8 mt-8">
-        <div className="text-center mx-auto max-w-max">
-          <h1 className="text-xl font-semibold">Resep Obat & Obat</h1>
+        <div className="flex justify-center mx-auto max-w-screen-sm p-4 ml-8">
+          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-center">
+            Resep Obat & Obat
+          </h1>
         </div>
       </div>
       <Table

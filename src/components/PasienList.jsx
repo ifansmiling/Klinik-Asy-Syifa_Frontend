@@ -1,28 +1,20 @@
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Space,
-  Table,
-  Popconfirm,
-  message,
-  Pagination,
-  Input,
-} from "antd";
+import { Button, Space, Table, Pagination, Input } from "antd";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
-import { BiSearch } from "react-icons/bi"; // Import BiSearch icon
+import { Link } from "react-router-dom";
+import { BiSearch } from "react-icons/bi";
 import api from "../services/api";
 
 const { Search } = Input;
 
 const PasienList = () => {
   const [patients, setPatients] = useState([]);
-  const [initialPatients, setInitialPatients] = useState([]); // State untuk menyimpan daftar pasien awal
+  const [setInitialPatients] = useState([]); // State untuk menyimpan daftar pasien awal
   const [loading, setLoading] = useState(false);
-  const [editClicked, setEditClicked] = useState(false);
+  const [setEditClicked] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); // State untuk menyimpan halaman saat ini
   const [pageSize] = useState(4); // State untuk menyimpan jumlah entri per halaman
-  const [searchText, setSearchText] = useState(""); // Pastikan menggunakan setSearchText, bukan setSearchTexts
+  const [setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState(""); // State untuk menyimpan kolom yang sedang dicari
 
   useEffect(() => {
@@ -34,7 +26,7 @@ const PasienList = () => {
           (a, b) => new Date(b.tanggal_berobat) - new Date(a.tanggal_berobat)
         );
         setPatients(sortedPatients);
-        setInitialPatients(sortedPatients); 
+        setInitialPatients(sortedPatients);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -49,7 +41,6 @@ const PasienList = () => {
   };
 
   const handleEdit = (record) => {
-    // Fungsi untuk meng-handle edit data pasien
     console.log("Edit patient:", record);
     setEditClicked(true);
   };
@@ -119,7 +110,7 @@ const PasienList = () => {
         </div>
       ),
       filterIcon: (filtered) => (
-        <BiSearch style={{ color: filtered ? "#1890ff" : undefined }} /> 
+        <BiSearch style={{ color: filtered ? "#1890ff" : undefined }} />
       ),
 
       onFilter: (value, record) =>
@@ -136,8 +127,10 @@ const PasienList = () => {
         searchedColumn === "nama_pasien" ? (
           <span style={{ color: "black" }}>{text}</span>
         ) : (
-          <span style={{ color: "black" }}>{text}</span> // Tetapkan warna teks menjadi hitam
+          <span style={{ color: "black" }}>{text}</span>
         ),
+      ellipsis: true,
+      responsive: ["xs", "sm", "md", "lg"],
     },
     {
       title: "Alamat Pasien",
@@ -145,6 +138,7 @@ const PasienList = () => {
       key: "alamat_pasien",
       className: "border border-yellow-200",
       ellipsis: true,
+      responsive: ["xs", "sm", "md", "lg"],
     },
     {
       title: "Dokter",
@@ -152,6 +146,7 @@ const PasienList = () => {
       key: "dokter",
       className: "border border-yellow-200",
       ellipsis: true,
+      responsive: ["xs", "sm", "md", "lg"],
     },
     {
       title: "Tanggal Berobat",
@@ -159,18 +154,19 @@ const PasienList = () => {
       key: "tanggal_berobat",
       className: "border border-yellow-200",
       ellipsis: true,
+      responsive: ["xs", "sm", "md", "lg"],
     },
     {
-      title: "Aksi" ,
+      title: "Aksi",
       key: "action",
       className: "border border-yellow-200 ml-9",
       render: (record) => (
         <Space size="middle" className="text-center">
           <Link
             to={`/pasien/edit/${record.id}`}
-            className="text-blue-500 hover:text-blue-700 hover:underline text-zl" 
+            className="text-blue-500 hover:text-blue-700 hover:underline text-zl"
             onClick={() => handleEdit(record)}
-            style={{ display: "inline-block", width: "100%" }} 
+            style={{ display: "inline-block", width: "100%" }}
           >
             Edit
           </Link>
@@ -186,8 +182,10 @@ const PasienList = () => {
 
   return (
     <div>
-      <div className="mt-9 text-center">
-        <h1 className="mb-5 mr-10 font-semibold text-lg ">Semua Pasien</h1>
+      <div className="container mx-auto mt-9 text-center px-4">
+        <h1 className="mb-5 font-semibold text-lg md:text-xl lg:text-2xl xl:text-3xl">
+          Semua Pasien
+        </h1>
       </div>
 
       <div className="overflow-x-auto">
@@ -201,9 +199,10 @@ const PasienList = () => {
               columns={columns}
               dataSource={paginatedPatients}
               onChange={handleChange}
-              pagination={false} // Disable pagination for now, you can remove this line if you want pagination
+              pagination={false}
+              scroll={{ x: true }}
             />
-            <div className="flex justify-end mt-4">
+            <div className="flex flex-wrap justify-center md:justify-end mt-4 px-4">
               <Pagination
                 current={currentPage}
                 total={patients.length}
