@@ -192,7 +192,7 @@ const Obat = () => {
                       type="text"
                       id={`nama-obat-${index}`}
                       className="mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
-                      placeholder="Contoh: Bodrex"
+                      placeholder="Contoh: Decolsin"
                       value={namaObatList[index]}
                       onChange={(e) => {
                         const newList = [...namaObatList];

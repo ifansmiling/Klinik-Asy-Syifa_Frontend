@@ -50,5 +50,3 @@ const DetailResep = ({ pasienId, onProcessCompleted }) => {
 };
 
 export default DetailResep;
-
-// Tambahkan ini dalam CSS atau di file CSS yang terhubung

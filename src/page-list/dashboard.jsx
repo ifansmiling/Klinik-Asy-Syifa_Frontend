@@ -73,8 +73,6 @@ const Dashboard = () => {
   }, []);
 
   const updateChartForClickedDate = async (minDate, maxDate) => {
-    console.log(minDate);
-    console.log(maxDate);
     try {
       const response = await axios.get("/pasien/perhari-by-week/hari", {
         params: {
@@ -96,7 +94,7 @@ const Dashboard = () => {
 
       setIsWeeklyView(false);
     } catch (error) {
-      console.error("Error updating chart for clicked date:", error);
+      console.error("Error Update Data Pasien:", error);
     }
   };
 
@@ -235,12 +233,12 @@ const Dashboard = () => {
                   },
                   zoom: {
                     enabled: true,
-                    type: "x", // Enables zooming along the x-axis
+                    type: "x", 
                     autoScaleYaxis: true,
                   },
                   pan: {
                     enabled: true,
-                    mode: "x", // Allows panning along the x-axis
+                    mode: "x", 
                   },
                   scrollbar: {
                     enabled: true,

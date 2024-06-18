@@ -183,7 +183,7 @@ const PasienList = () => {
   return (
     <div>
       <div className="container mx-auto mt-9 text-center px-4">
-        <h1 className="mb-5 font-semibold text-lg md:text-xl lg:text-2xl xl:text-3xl">
+        <h1 className="mb-5 font-semibold text-lg md:text-xl lg:text-2xl xl:text-2xl">
           Semua Pasien
         </h1>
       </div>

@@ -145,7 +145,7 @@ const Resep = () => {
 
   return (
     <div className="flex mt-5 justify-center font-sans">
-      <div className="w-full max-w-lg p-5 rounded-lg font-inter bg-white border border-yellow-300">
+      <div className="w-full p-5 rounded-lg font-inter bg-white border border-yellow-300">
         <div className="">
           <h1 className="text-lg font-semibold mb-4 text-center">
             Form Resep Obat
@@ -153,88 +153,90 @@ const Resep = () => {
           <form onSubmit={handleSubmit} className="px-4 py-4">
             {data.map((resep, index) => (
               <div key={index} className="grid gap-y-4 mb-8">
-                <div className="flex flex-col">
-                  <label
-                    htmlFor={`obat-${index}`}
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    Cari Obat {index + 1}
-                  </label>
-                  <Select
-                    className="mt-2 w-full"
-                    showSearch
-                    placeholder="Cari Obat"
-                    optionFilterProp="children"
-                    onChange={(value) => onChange(value, index)}
-                    value={selectedObatIds[index]}
-                    dropdownStyle={{
-                      maxHeight: `${dropdownMaxHeight}px`,
-                      overflowY: "auto",
-                    }}
-                    dropdownMatchSelectWidth={false}
-                  >
-                    {obatList.map((obat) => (
-                      <Option key={obat.id} value={obat.id}>
-                        {`${obat.nama_obat} | ${obat.jumlah_obat} | ${
-                          obat.pasien ? obat.pasien.nama_pasien : ""
-                        }`}
-                      </Option>
-                    ))}
-                  </Select>
-                </div>
-                <div className="flex flex-col">
-                  <label
-                    htmlFor={`nama-resep-${index}`}
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    Nama Resep {index + 1}
-                  </label>
-                  <input
-                    value={resep.nama_resep}
-                    onChange={(e) =>
-                      handleInputChange(e.target.value, "nama_resep", index)
-                    }
-                    type="text"
-                    id={`nama-resep-${index}`}
-                    className="mt-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300 w-full"
-                    placeholder="Contoh: Amoxilin"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label
-                    htmlFor={`jumlah-resep-${index}`}
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    Jumlah Resep {index + 1}
-                  </label>
-                  <input
-                    value={resep.jumlah_resep}
-                    onChange={(e) =>
-                      handleInputChange(e.target.value, "jumlah_resep", index)
-                    }
-                    type="text"
-                    id={`jumlah-resep-${index}`}
-                    className="mt-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300 w-full"
-                    placeholder="Contoh: 100mg"
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label
-                    htmlFor={`bentuk-resep-${index}`}
-                    className="text-sm font-medium text-gray-700"
-                  >
-                    Bentuk Resep {index + 1}
-                  </label>
-                  <input
-                    value={resep.bentuk_resep}
-                    onChange={(e) =>
-                      handleInputChange(e.target.value, "bentuk_resep", index)
-                    }
-                    type="text"
-                    id={`bentuk-resep-${index}`}
-                    className="mt-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300 w-full"
-                    placeholder="Contoh: Tablet, Sirup, Kapsul"
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor={`obat-${index}`}
+                      className="text-sm font-medium text-gray-700"
+                    >
+                      Cari Obat {index + 1}
+                    </label>
+                    <Select
+                      className="mt-2 w-full"
+                      showSearch
+                      placeholder="Cari Obat"
+                      optionFilterProp="children"
+                      onChange={(value) => onChange(value, index)}
+                      value={selectedObatIds[index]}
+                      dropdownStyle={{
+                        maxHeight: `${dropdownMaxHeight}px`,
+                        overflowY: "auto",
+                      }}
+                      dropdownMatchSelectWidth={false}
+                    >
+                      {obatList.map((obat) => (
+                        <Option key={obat.id} value={obat.id}>
+                          {`${obat.nama_obat} | ${obat.jumlah_obat} | ${
+                            obat.pasien ? obat.pasien.nama_pasien : ""
+                          }`}
+                        </Option>
+                      ))}
+                    </Select>
+                  </div>
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor={`nama-resep-${index}`}
+                      className="text-sm font-medium text-gray-700"
+                    >
+                      Nama Resep {index + 1}
+                    </label>
+                    <input
+                      value={resep.nama_resep}
+                      onChange={(e) =>
+                        handleInputChange(e.target.value, "nama_resep", index)
+                      }
+                      type="text"
+                      id={`nama-resep-${index}`}
+                      className="mt-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300 w-full"
+                      placeholder="Contoh: Paracetamol"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor={`jumlah-resep-${index}`}
+                      className="text-sm font-medium text-gray-700"
+                    >
+                      Jumlah Resep {index + 1}
+                    </label>
+                    <input
+                      value={resep.jumlah_resep}
+                      onChange={(e) =>
+                        handleInputChange(e.target.value, "jumlah_resep", index)
+                      }
+                      type="text"
+                      id={`jumlah-resep-${index}`}
+                      className="mt-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300 w-full"
+                      placeholder="Contoh: 100mg"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label
+                      htmlFor={`bentuk-resep-${index}`}
+                      className="text-sm font-medium text-gray-700"
+                    >
+                      Bentuk Resep {index + 1}
+                    </label>
+                    <input
+                      value={resep.bentuk_resep}
+                      onChange={(e) =>
+                        handleInputChange(e.target.value, "bentuk_resep", index)
+                      }
+                      type="text"
+                      id={`bentuk-resep-${index}`}
+                      className="mt-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300 w-full"
+                      placeholder="Contoh: Tablet, Sirup, Kapsul"
+                    />
+                  </div>
                 </div>
                 {index > 0 && (
                   <button

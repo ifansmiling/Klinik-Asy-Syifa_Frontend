@@ -21,25 +21,18 @@ const Login = () => {
   };
 
   const handleLoginSuccess = (accessToken) => {
-    console.log(
-      "Login successful, navigating to dashboard with token:",
-      accessToken
-    );
-    authLogin(accessToken); // Memperbarui status autentikasi
-    navigate("/dashboard"); // Navigasi ke dashboard
+    authLogin(accessToken);
+    navigate("/dashboard");
   };
 
   const loginUser = async () => {
     setLoading(true);
-    setError(null); // Reset error sebelum memulai proses login
+    setError(null);
     try {
-      console.log("Attempting to login with:", data);
       const response = await api.post("/login", {
         email: data.email,
         kata_sandi: data.kata_sandi,
       });
-      console.log("Login API response received:", response.data);
-
       if (
         response.data &&
         response.data.accessToken &&
@@ -52,12 +45,11 @@ const Login = () => {
         localStorage.setItem("userData", JSON.stringify(userData));
 
         setLoading(false);
-        handleLoginSuccess(accessToken); // Menggunakan accessToken yang baru saja diterima
+        handleLoginSuccess(accessToken); 
       } else {
         throw new Error("Invalid response from server");
       }
     } catch (error) {
-      console.error("Login failed:", error);
       setLoading(false);
       setError(
         error.response?.data?.message || "Login failed, please try again."
@@ -68,9 +60,6 @@ const Login = () => {
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (token) {
-      console.log(
-        "Found existing token in localStorage, navigating to dashboard."
-      );
       handleLoginSuccess(token);
     }
   }, []);

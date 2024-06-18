@@ -34,7 +34,7 @@ function Navbar() {
           rolePhoto = "/Administrator.jpg";
           break;
         default:
-          rolePhoto = ""; // Foto default jika peran tidak cocok
+          rolePhoto = "";
           break;
       }
 
@@ -51,8 +51,6 @@ function Navbar() {
       reader.onload = (e) => {
         const selectedPhotoDataUrl = e.target.result;
         setSelectedPhoto(selectedPhotoDataUrl);
-
-        // Simpan foto sesuai dengan peran pengguna ke localStorage
         localStorage.setItem(
           `selectedPhoto_${userData.role}_${userData.nama}`,
           selectedPhotoDataUrl
@@ -85,7 +83,7 @@ function Navbar() {
               aria-expanded="false"
             >
               <img
-                className="w-8 h-8 rounded-full pointer-events-none" // Menonaktifkan event click
+                className="w-8 h-8 rounded-full pointer-events-none" 
                 src={selectedPhoto}
                 alt="Profile"
               />
@@ -136,7 +134,6 @@ function Sidebar() {
     },
   ];
 
-  // Menentukan menu "Resep Obat" berdasarkan peran pengguna
   const resepObatMenu =
     role === "Dokter"
       ? {
@@ -147,7 +144,6 @@ function Sidebar() {
         }
       : null;
 
-  // Menggabungkan menu-menu yang sesuai dengan peran pengguna
   const menu2 = [
     resepObatMenu,
     role === "Apoteker" && {

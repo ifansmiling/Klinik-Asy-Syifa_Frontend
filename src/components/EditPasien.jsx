@@ -56,105 +56,101 @@ const EditPasien = () => {
   };
 
   return (
-    <div className="w-full p-5 rounded-lg font-inter bg-white border border-yellow-300 mt-14">
-      <div className="">
-        <div className="">
-          <h2 className="text-xl font-semibold mb-6 mt-4 text-center">
-            Edit Pasien
-          </h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="col-span-1">
-                <label
-                  htmlFor="nama_pasien"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Nama Pasien
-                </label>
-                <input
-                  type="text"
-                  id="nama_pasien"
-                  name="nama_pasien"
-                  value={formData.nama_pasien}
-                  onChange={handleChange}
-                  className="mt-1 block w-full px-3 py-2 border border-yellow-500 rounded-md shadow-sm focus:outline-none focus:ring-indigo-700 focus:border-indigo-500 text-sm"
-                  required
-                />
-              </div>
-              <div className="col-span-1">
-                <label
-                  htmlFor="alamat_pasien"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Alamat Pasien
-                </label>
-                <input
-                  type="text"
-                  id="alamat_pasien"
-                  name="alamat_pasien"
-                  value={formData.alamat_pasien}
-                  onChange={handleChange}
-                  className="mt-1 block w-full px-3 py-2 border border-yellow-500 rounded-md shadow-sm focus:outline-none focus:ring-indigo-700 focus:border-indigo-500 text-sm"
-                  required
-                />
-              </div>
-              <div className="col-span-1">
-                <label
-                  htmlFor="dokter"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Dokter
-                </label>
-                <input
-                  type="text"
-                  id="dokter"
-                  name="dokter"
-                  value={formData.dokter}
-                  onChange={handleChange}
-                  className="mt-1 block w-full px-3 py-2 border border-yellow-500 rounded-md shadow-sm focus:outline-none focus:ring-indigo-700 focus:border-indigo-500 text-sm"
-                  required
-                />
-              </div>
-              <div className="col-span-1">
-                <label
-                  htmlFor="tanggal_berobat"
-                  className="text-sm font-medium text-gray-700"
-                >
-                  Tanggal Berobat
-                </label>
-                <input
-                  type="date"
-                  id="tanggal_berobat"
-                  name="tanggal_berobat"
-                  value={formData.tanggal_berobat}
-                  onChange={handleChange}
-                  className="mt-1 block w-full px-3 py-2 border border-yellow-500 rounded-md shadow-sm focus:outline-none focus:ring-indigo-700 focus:border-indigo-500 text-sm"
-                  required
-                />
-              </div>
-            </div>
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                className="py-2 px-4 min-w-[150px] grid place-items-center border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+    <div className="w-full p-5 rounded-lg font-inter bg-white border border-yellow-300 mt-10">
+      <div>
+        <h2 className="text-xl font-semibold mb-6 mt-4 text-center">
+          Edit Pasien
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="col-span-1">
+              <label
+                htmlFor="nama_pasien"
+                className="text-sm font-medium text-gray-700"
               >
-                {loading ? (
-                  <AiOutlineLoading3Quarters className="animate-spin" />
-                ) : (
-                  "Simpan"
-                )}
-              </button>
+                Nama Pasien
+              </label>
+              <input
+                type="text"
+                id="nama_pasien"
+                name="nama_pasien"
+                value={formData.nama_pasien}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border border-yellow-500 rounded-md shadow-sm focus:outline-none focus:ring-indigo-700 focus:border-indigo-500 text-sm"
+                required
+              />
             </div>
-            <section className="text-sm grid w-full place-items-center pt-4">
-              {error && <p className="text-red-400">{error}</p>}
-              {success && (
-                <p className="text-green-400">
-                  Data pasien berhasil diperbarui
-                </p>
+            <div className="col-span-1">
+              <label
+                htmlFor="alamat_pasien"
+                className="text-sm font-medium text-gray-700"
+              >
+                Alamat Pasien
+              </label>
+              <input
+                type="text"
+                id="alamat_pasien"
+                name="alamat_pasien"
+                value={formData.alamat_pasien}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border border-yellow-500 rounded-md shadow-sm focus:outline-none focus:ring-indigo-700 focus:border-indigo-500 text-sm"
+                required
+              />
+            </div>
+            <div className="col-span-1">
+              <label
+                htmlFor="dokter"
+                className="text-sm font-medium text-gray-700"
+              >
+                Dokter
+              </label>
+              <input
+                type="text"
+                id="dokter"
+                name="dokter"
+                value={formData.dokter}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border border-yellow-500 rounded-md shadow-sm focus:outline-none focus:ring-indigo-700 focus:border-indigo-500 text-sm"
+                required
+              />
+            </div>
+            <div className="col-span-1">
+              <label
+                htmlFor="tanggal_berobat"
+                className="text-sm font-medium text-gray-700"
+              >
+                Tanggal Berobat
+              </label>
+              <input
+                type="date"
+                id="tanggal_berobat"
+                name="tanggal_berobat"
+                value={formData.tanggal_berobat}
+                onChange={handleChange}
+                className="mt-1 block w-full px-3 py-2 border border-yellow-500 rounded-md shadow-sm focus:outline-none focus:ring-indigo-700 focus:border-indigo-500 text-sm"
+                required
+              />
+            </div>
+          </div>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="py-2 px-4 min-w-[150px] grid place-items-center border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              {loading ? (
+                <AiOutlineLoading3Quarters className="animate-spin" />
+              ) : (
+                "Simpan"
               )}
-            </section>
-          </form>
-        </div>
+            </button>
+          </div>
+          <section className="text-sm grid w-full place-items-center pt-4">
+            {error && <p className="text-red-400">{error}</p>}
+            {success && (
+              <p className="text-green-400">Data pasien berhasil diperbarui</p>
+            )}
+          </section>
+        </form>
       </div>
     </div>
   );

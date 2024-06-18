@@ -19,9 +19,8 @@ const HistoryResep = () => {
   );
 
   const [resepProcessed, setResepProcessed] = useState(() => {
-    // Set status resep awal berdasarkan local storage
     const storedStatus = localStorage.getItem("resepProcessed");
-    return storedStatus === "true"; // Kembalikan nilai boolean berdasarkan status yang tersimpan di local storage
+    return storedStatus === "true";
   });
 
   useEffect(() => {
@@ -38,13 +37,11 @@ const HistoryResep = () => {
             createdAt: pasien.createdAt,
           }))
           .sort((a, b) => {
-            // Urutkan berdasarkan createdAt secara descending
             const dateComparison =
               new Date(b.createdAt) - new Date(a.createdAt);
             if (dateComparison !== 0) {
               return dateComparison;
             } else {
-              // Jika tanggal pembuatan sama, bandingkan ID pasien
               return b.id - a.id;
             }
           });
@@ -69,14 +66,10 @@ const HistoryResep = () => {
           const allResepObatData = resepObatResponses.map(
             (response) => response.data
           );
-
-          // Membuat objek untuk memetakan setiap obat_id dengan data resep obat yang sesuai
           const selectedResepObatMapped = {};
           selectedObatData.forEach((obat, index) => {
             selectedResepObatMapped[obat.id] = allResepObatData[index];
           });
-
-          // Mengupdate state dengan objek yang memetakan data resep obat berdasarkan obat_id
           setSelectedResepObatByObatId(selectedResepObatMapped);
         } catch (error) {
           console.error("Error fetching resep obat data:", error);
@@ -135,7 +128,6 @@ const HistoryResep = () => {
       message.success("Status resep berhasil diperbarui");
     } catch (error) {
       console.error("Error fetching patient data:", error);
-      // Tampilkan pesan error
       message.error("Gagal memperbarui status resep");
     }
   };
@@ -295,8 +287,8 @@ const HistoryResep = () => {
   return (
     <>
       <div className="text-center mr-10 mb-8 mt-8">
-        <div className="flex justify-center mx-auto max-w-screen-sm p-4 ml-8">
-          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-center">
+        <div className="flex justify-center mx-auto max-w-screen-sm p-4">
+          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-2xl font-semibold text-center">
             Resep Obat & Obat
           </h1>
         </div>
@@ -400,7 +392,6 @@ const HistoryResep = () => {
                   </tbody>
                 </table>
 
-                {/* Tabel Resep Obat */}
                 <h2 className="mb-1 text-l font-semibold text-left">
                   Data Resep Obat {index + 1}
                 </h2>
@@ -422,7 +413,6 @@ const HistoryResep = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {/* Lakukan pemetaan terhadap resep obat yang sesuai dengan obat saat ini */}
                     {selectedResepObatByObatId[obat.id]?.map(
                       (resep_obat, index) => (
                         <tr key={resep_obat.id}>
@@ -446,10 +436,10 @@ const HistoryResep = () => {
               </div>
             ))}
           <DetailResep
-            pasienId={selectedPasienId} // Contoh penerusan data pasienId
-            selectedPasienData={selectedPasienData} // Meneruskan data pasien
-            selectedObatData={selectedObatData} // Meneruskan data obat
-            selectedResepObatData={selectedResepObatData} // Meneruskan data resep obat
+            pasienId={selectedPasienId} 
+            selectedPasienData={selectedPasienData} 
+            selectedObatData={selectedObatData}
+            selectedResepObatData={selectedResepObatData} 
             onClose={handleCloseModal}
             onProcessCompleted={handleProcessCompleted}
           />

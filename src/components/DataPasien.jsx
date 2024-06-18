@@ -21,7 +21,7 @@ const DataPasien = () => {
   });
   const [existingPatientSelected] = useState(false);
   const navigate = useNavigate();
-  const [success, setSuccess] = useState(false);
+  const [setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
 
@@ -198,8 +198,7 @@ const DataPasien = () => {
             </p>
             <div className="text-sm mb-6 space-y-2 text-gray-700">
               <p>
-                <span className="">Nama Pasien:</span>{" "}
-                {formData.nama_pasien}
+                <span className="">Nama Pasien:</span> {formData.nama_pasien}
               </p>
               <p>
                 <span className="">Alamat Pasien:</span>{" "}

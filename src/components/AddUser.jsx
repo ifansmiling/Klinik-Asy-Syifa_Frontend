@@ -5,7 +5,7 @@ import {
   AiOutlineEye,
   AiOutlineEyeInvisible,
   AiOutlineCheckCircle,
-} from "react-icons/ai"; // Import ikon mata sandi
+} from "react-icons/ai"; 
 import { useNavigate } from "react-router-dom";
 
 const AddUser = () => {
@@ -129,10 +129,9 @@ const AddUser = () => {
                     required
                     placeholder="*******"
                   />
-                  {/* Tambahkan ikon mata */}
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)} // Toggle state showPassword saat ikon mata diklik
+                    onClick={() => setShowPassword(!showPassword)} 
                     className="absolute inset-y-0 right-0 flex items-center px-2 text-gray-500"
                   >
                     {showPassword ? (

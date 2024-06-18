@@ -5,7 +5,7 @@ import {
   AiOutlineLoading3Quarters,
   AiOutlineEye,
   AiOutlineEyeInvisible,
-} from "react-icons/ai"; // Import ikon mata sandi
+} from "react-icons/ai"; 
 
 const EditUser = () => {
   const { id } = useParams();
@@ -22,7 +22,7 @@ const EditUser = () => {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [roleList, setRoleList] = useState([]);
-  const [showPassword, setShowPassword] = useState(false); // Tambahkan state showPassword
+  const [showPassword, setShowPassword] = useState(false); 
 
   useEffect(() => {
     getUserData();
@@ -129,17 +129,16 @@ const EditUser = () => {
                 </label>
                 <div className="relative">
                   <input
-                    type={showPassword ? "text" : "password"} // Tampilkan atau sembunyikan kata sandi sesuai state showPassword
+                    type={showPassword ? "text" : "password"} 
                     id="kata_sandi"
                     name="kata_sandi"
                     value={formData.kata_sandi}
                     onChange={handleChange}
                     className="mt-1 block w-full px-3 py-2 border border-yellow-500 rounded-md shadow-sm focus:outline-none focus:ring-indigo-700 focus:border-indigo-500 text-sm"
                   />
-                  {/* Tambahkan ikon mata */}
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)} // Toggle state showPassword saat ikon mata diklik
+                    onClick={() => setShowPassword(!showPassword)} 
                     className="absolute inset-y-0 right-0 flex items-center px-2 text-gray-500"
                   >
                     {showPassword ? (
