@@ -21,7 +21,7 @@ const DataPasien = () => {
   });
   const [existingPatientSelected] = useState(false);
   const navigate = useNavigate();
-  const [setSuccess] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
 

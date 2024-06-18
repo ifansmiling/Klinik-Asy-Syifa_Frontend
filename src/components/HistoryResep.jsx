@@ -392,6 +392,7 @@ const HistoryResep = () => {
                   </tbody>
                 </table>
 
+                {}
                 <h2 className="mb-1 text-l font-semibold text-left">
                   Data Resep Obat {index + 1}
                 </h2>
@@ -413,6 +414,7 @@ const HistoryResep = () => {
                     </tr>
                   </thead>
                   <tbody>
+                    {}
                     {selectedResepObatByObatId[obat.id]?.map(
                       (resep_obat, index) => (
                         <tr key={resep_obat.id}>
@@ -436,10 +438,10 @@ const HistoryResep = () => {
               </div>
             ))}
           <DetailResep
-            pasienId={selectedPasienId} 
-            selectedPasienData={selectedPasienData} 
+            pasienId={selectedPasienId}
+            selectedPasienData={selectedPasienData}
             selectedObatData={selectedObatData}
-            selectedResepObatData={selectedResepObatData} 
+            selectedResepObatData={selectedResepObatData}
             onClose={handleCloseModal}
             onProcessCompleted={handleProcessCompleted}
           />
