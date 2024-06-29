@@ -6,7 +6,6 @@ import Users from "./page-list/Users";
 import Pasien from "./page-list/Pasien";
 import History from "./page-list/History";
 import Obat from "./page-list/Obat";
-import Resep from "./page-list/Resep";
 import AddUsers from "./page-list/AddUsers";
 import EditUsers from "./page-list/EditUsers";
 import EditPasiens from "./page-list/EditPasiens";
@@ -14,6 +13,7 @@ import ListPasien from "./page-list/ListPasien";
 import { AuthProvider } from "./context/authContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFound from "./components/NotFound";
+import Stok from "./page-list/Stok";
 
 function App() {
   return (
@@ -39,18 +39,10 @@ function App() {
             }
           />
           <Route
-            path="/pasien/obat"
+            path="/pasien/resep"
             element={
               <ProtectedRoute allowedRoles={["Dokter"]}>
                 <Obat />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/pasien/obat/resep"
-            element={
-              <ProtectedRoute allowedRoles={["Dokter"]}>
-                <Resep />
               </ProtectedRoute>
             }
           />
@@ -60,6 +52,14 @@ function App() {
             element={
               <ProtectedRoute allowedRoles={["Apoteker"]}>
                 <History />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/stok_resep"
+            element={
+              <ProtectedRoute allowedRoles={["Apoteker"]}>
+                <Stok />
               </ProtectedRoute>
             }
           />

@@ -154,7 +154,7 @@ const UserList = () => {
     {
       title: "Aksi",
       key: "action",
-      className: "border border-yellow-100 text-center",
+      className: "border border-yellow-100",
       render: (record) => (
         <Space size="middle">
           <Link

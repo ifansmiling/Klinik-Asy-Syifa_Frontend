@@ -4,6 +4,7 @@ import {
   HomeModernIcon,
   ChartPieIcon,
   ClipboardDocumentIcon,
+  ClipboardIcon,
   UsersIcon,
   UserIcon,
   PowerIcon,
@@ -83,7 +84,7 @@ function Navbar() {
               aria-expanded="false"
             >
               <img
-                className="w-8 h-8 rounded-full pointer-events-none" 
+                className="w-8 h-8 rounded-full pointer-events-none"
                 src={selectedPhoto}
                 alt="Profile"
               />
@@ -147,12 +148,18 @@ function Sidebar() {
   const menu2 = [
     resepObatMenu,
     role === "Apoteker" && {
+      name: "Stok Resep",
+      isActive: activeMenu === "Stok Resep",
+      icon: <ClipboardIcon width={18} className="text-gray-600" />,
+      route: "/stok_resep",
+    },
+    role === "Apoteker" && {
       name: "Riwayat Resep",
       isActive: activeMenu === "Riwayat Resep",
       icon: <ClipboardDocumentIcon width={18} className="text-gray-600" />,
       route: "/history",
     },
-    role == "Admin" && {
+    role === "Admin" && {
       name: "Pasien",
       isActive: activeMenu === "Pasien",
       icon: <UserIcon width={18} className="text-gray-600" />,

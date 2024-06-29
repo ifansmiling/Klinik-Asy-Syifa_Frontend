@@ -2,33 +2,32 @@ import React, { useState, useEffect } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
 import { Select } from "antd";
-import { AiOutlineLoading3Quarters, AiOutlinePlusCircle } from "react-icons/ai";
+import { AiOutlinePlusCircle } from "react-icons/ai";
 
 const { Option } = Select;
 
 const Obat = () => {
-  const [namaObatList, setNamaObatList] = useState([""]);
-  const [jumlahObatList, setJumlahObatList] = useState([""]);
-  const [bentukObatList, setBentukObatList] = useState([""]);
-  const [dosisObatList, setDosisObatList] = useState([""]);
-  const [caraPakaiList, setCaraPakaiList] = useState([""]);
-
+  const [namaObat, setNamaObat] = useState("");
+  const [jumlahObat, setJumlahObat] = useState("");
+  const [namaResep, setNamaResep] = useState([]);
+  const [stokResep, setStokResep] = useState([]);
+  const [jumlahResep, setJumlahResep] = useState([]);
+  const [bentukResep, setBentukResep] = useState([]);
+  const [dosisResep, setDosisResep] = useState([]);
+  const [caraPakaiResep, setCaraPakaiResep] = useState([]);
+  const [stokResepList, setStokResepList] = useState([]);
   const [pasienList, setPasienList] = useState([]);
   const [selectedPasienId, setSelectedPasienId] = useState(null);
+  const [selectedResepId, setSelectedResepId] = useState(null);
+
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [additionalFields, setAdditionalFields] = useState(1);
-  const [showAdditionalFields, setShowAdditionalFields] = useState([false]);
-  const [inputValidation, setInputValidation] = useState({
-    namaObat: [],
-    jumlahObat: [],
-    bentukObat: [],
-    dosisObat: [],
-    caraPakai: [],
-  });
   const [showConfirmationPopup, setShowConfirmationPopup] = useState(false);
 
+  const navigate = useNavigate();
+
+  // Fetch pasien data
   const getPasien = async () => {
     try {
       const response = await api.get("/pasien");
@@ -42,27 +41,25 @@ const Obat = () => {
     }
   };
 
+  // Fetch stok resep data
+  const getStokResep = async () => {
+    try {
+      const response = await api.get("/stok_resep");
+      setStokResepList(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getPasien();
+    getStokResep();
   }, []);
-
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Memeriksa apakah ada input yang kosong
-    const isAnyFieldEmpty = namaObatList.some((namaObat, index) => {
-      return (
-        !namaObat ||
-        !jumlahObatList[index] ||
-        !bentukObatList[index] ||
-        !dosisObatList[index] ||
-        !caraPakaiList[index]
-      );
-    });
-
-    if (isAnyFieldEmpty) {
+    if (!namaObat || !jumlahObat) {
       setError("Harap isi semua bidang yang diperlukan.");
       return;
     }
@@ -75,24 +72,32 @@ const Obat = () => {
     setLoading(true);
 
     try {
-      await Promise.all(
-        namaObatList.map(async (namaObat, index) => {
-          await api.post("/obat", {
-            nama_obat: namaObat,
-            jumlah_obat: jumlahObatList[index],
-            bentuk_obat: bentukObatList[index],
-            dosis_obat: dosisObatList[index],
-            cara_pakai: caraPakaiList[index],
-            pasien_id: selectedPasienId,
-          });
-        })
-      );
-      navigate("/pasien/obat/resep");
+      const dataResep = {
+        nama_resep: namaResep.length > 0 ? namaResep[0] : "",
+        jumlah_resep: jumlahResep.length > 0 ? jumlahResep[0] : "",
+        bentuk_resep: bentukResep.length > 0 ? bentukResep[0] : "",
+        dosis: dosisResep.length > 0 ? dosisResep[0] : "",
+        cara_pakai: caraPakaiResep.length > 0 ? caraPakaiResep[0] : "",
+        stok_resep_id: selectedResepId,
+        pasien_id: selectedPasienId, // Tambahkan pasien_id di sini
+      };
+
+      await Promise.all([
+        api.post("/obat", {
+          nama_obat: namaObat,
+          jumlah_obat: jumlahObat,
+          pasien_id: selectedPasienId,
+        }),
+        api.post("/resep_obat", dataResep), // Kirim dataResep yang sudah termasuk pasien_id
+      ]);
+
+      navigate("/pasien");
       setSuccess(true);
       setLoading(false);
       setError(null);
     } catch (error) {
       setLoading(false);
+      console.error("Error response:", error.response);
       setError(error.response.data.message);
     }
   };
@@ -110,13 +115,12 @@ const Obat = () => {
   };
 
   const addField = () => {
-    setAdditionalFields((prev) => prev + 1);
-    setShowAdditionalFields((prev) => [...prev, false]);
-    setNamaObatList((prev) => [...prev, ""]);
-    setJumlahObatList((prev) => [...prev, ""]);
-    setBentukObatList((prev) => [...prev, ""]);
-    setDosisObatList((prev) => [...prev, ""]);
-    setCaraPakaiList((prev) => [...prev, ""]);
+    setNamaResep((prev) => [...prev, ""]);
+    setStokResep((prev) => [...prev, ""]);
+    setJumlahResep((prev) => [...prev, ""]);
+    setBentukResep((prev) => [...prev, ""]);
+    setDosisResep((prev) => [...prev, ""]);
+    setCaraPakaiResep((prev) => [...prev, ""]);
   };
 
   const filterOption = (input, option) =>
@@ -129,13 +133,11 @@ const Obat = () => {
   );
 
   const removeField = (index) => {
-    setAdditionalFields((prev) => prev - 1);
-    setShowAdditionalFields((prev) => prev.filter((value, i) => i !== index));
-    setNamaObatList((prev) => prev.filter((value, i) => i !== index));
-    setJumlahObatList((prev) => prev.filter((value, i) => i !== index));
-    setBentukObatList((prev) => prev.filter((value, i) => i !== index));
-    setDosisObatList((prev) => prev.filter((value, i) => i !== index));
-    setCaraPakaiList((prev) => prev.filter((value, i) => i !== index));
+    setNamaResep((prev) => prev.filter((_, i) => i !== index));
+    setJumlahResep((prev) => prev.filter((_, i) => i !== index));
+    setBentukResep((prev) => prev.filter((_, i) => i !== index));
+    setDosisResep((prev) => prev.filter((_, i) => i !== index));
+    setCaraPakaiResep((prev) => prev.filter((_, i) => i !== index));
   };
 
   return (
@@ -143,7 +145,7 @@ const Obat = () => {
       <div className="w-full p-5 rounded-lg font-inter bg-white border border-yellow-300">
         <div className="">
           <h1 className="text-lg font-semibold mb-6 mt-2 text-center">
-            Form Obat
+            Form Resep Obat
           </h1>
           <div className="w-2/3 px-8 border-yellow-400">
             <Select
@@ -169,201 +171,264 @@ const Obat = () => {
                   <Option
                     key={pasien.id}
                     value={pasien.id}
-                    children={`${pasien.nama_pasien} | ${pasien.tanggal_berobat}`}
+                    children={`${pasien.nama_pasien}`}
                   ></Option>
                 ))}
             </Select>
           </div>
           <form onSubmit={handleSubmit} className="px-9 py-1">
             <div className="grid gap-4 gap-y-4 py-4 sm:grid-cols-1">
-              {[...Array(additionalFields)].map((_, index) => (
+              <div className="grid grid-cols-1 gap-y-4 gap-x-4 sm:grid-cols-1 md:grid-cols-2">
+                <div className="flex flex-col col-span-1">
+                  <label
+                    htmlFor="nama-obat"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    Nama Obat
+                  </label>
+                  <input
+                    type="text"
+                    id="nama-obat"
+                    className="mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
+                    placeholder="Contoh: Decolsin"
+                    value={namaObat}
+                    onChange={(e) => setNamaObat(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-col col-span-1">
+                  <label
+                    htmlFor="jumlah-obat"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    Jumlah Obat
+                  </label>
+                  <input
+                    type="text"
+                    id="jumlah-obat"
+                    className="mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
+                    placeholder="Contoh: 10"
+                    value={jumlahObat}
+                    onChange={(e) => setJumlahObat(e.target.value)}
+                  />
+                </div>
+              </div>
+
+              {[...Array(namaResep.length)].map((_, index) => (
                 <div
                   key={index}
-                  className="grid grid-cols-1 gap-y-4 gap-x-4 sm:grid-cols-1 md:grid-cols-2"
+                  className="grid grid-cols-1 gap-y-4 gap-x-4 sm:grid-cols-1 md:grid-cols-2 mt-4"
                 >
-                  <div className="flex flex-col col-span-1">
+                  <div className="flex flex-col col-span-2">
                     <label
-                      htmlFor={`nama-obat-${index}`}
+                      htmlFor={`cari-resep-${index}`}
+                      className="text-sm font-medium text-gray-700 mb-1"
+                    >
+                      Cari Resep
+                    </label>
+                    <Select
+                      showSearch
+                      placeholder="Pilih"
+                      optionFilterProp="children"
+                      onChange={(value) => {
+                        const selectedResep = stokResepList.find(
+                          (resep) => resep.id === value
+                        );
+
+                        if (selectedResep) {
+                          setSelectedResepId(value);
+                          const newNamaResep = [...namaResep];
+                          newNamaResep[index] = selectedResep.nama_resep;
+                          const newStokResep = [...stokResep];
+                          newStokResep[index] = selectedResep.status_stok; // Perbarui status stok
+                          setNamaResep(newNamaResep);
+                          setStokResep(newStokResep); // Update state status stok
+                        }
+                      }}
+                      onSearch={onSearch}
+                      filterOption={filterOption}
+                      value={selectedResepId} // Gunakan selectedResepId untuk nilai terpilih
+                      style={{ width: 150 }}
+                      dropdownStyle={{
+                        maxHeight: `${dropdownMaxHeight}px`,
+                        overflowY: "auto",
+                      }}
+                    >
+                      {stokResepList.map((resep) => (
+                        <Option key={resep.id} value={resep.id}>
+                          {resep.nama_resep}
+                        </Option>
+                      ))}
+                    </Select>
+                  </div>
+
+                  <div className="flex flex-col col-span-1 md:col-span-1">
+                    <label
+                      htmlFor={`nama-resep-${index}`}
                       className="text-sm font-medium text-gray-700"
                     >
-                      Nama Obat {index + 1}
+                      Nama Resep
                     </label>
                     <input
                       type="text"
-                      id={`nama-obat-${index}`}
+                      placeholder="Nama Resep"
                       className="mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
-                      placeholder="Contoh: Decolsin"
-                      value={namaObatList[index]}
-                      onChange={(e) => {
-                        const newList = [...namaObatList];
-                        newList[index] = e.target.value;
-                        setNamaObatList(newList);
-                      }}
+                      value={namaResep[index]}
+                      disabled // tambahkan disabled di sini
                     />
-                    {inputValidation.namaObat[index] && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {inputValidation.namaObat[index]}
-                      </p>
-                    )}
                   </div>
-                  <div className="flex flex-col col-span-1">
+
+                  <div className="flex flex-col col-span-1 md:col-span-1">
                     <label
-                      htmlFor={`jumlah-${index}`}
+                      htmlFor={`stok-resep-${index}`}
                       className="text-sm font-medium text-gray-700"
                     >
-                      Jumlah Obat {index + 1}
+                      Stok Resep
                     </label>
                     <input
                       type="text"
-                      id={`jumlah-${index}`}
+                      placeholder="Stok"
                       className="mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
-                      placeholder="Contoh: 10"
-                      value={jumlahObatList[index]}
-                      onChange={(e) => {
-                        const newList = [...jumlahObatList];
-                        newList[index] = e.target.value;
-                        setJumlahObatList(newList);
-                      }}
+                      value={stokResep[index]}
+                      disabled // tambahkan disabled di sini
                     />
-                    {inputValidation.jumlahObat[index] && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {inputValidation.jumlahObat[index]}
-                      </p>
-                    )}
                   </div>
+
                   <div className="flex flex-col col-span-1">
                     <label
-                      htmlFor={`bentuk-obat-${index}`}
+                      htmlFor={`jumlah-resep-${index}`}
                       className="text-sm font-medium text-gray-700"
                     >
-                      Bentuk Obat {index + 1}
+                      Jumlah Resep
                     </label>
                     <input
                       type="text"
-                      id={`bentuk-obat-${index}`}
+                      id={`jumlah-resep-${index}`}
                       className="mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
-                      placeholder="Contoh: Tablet, Sirup, Kapsul"
-                      value={bentukObatList[index]}
+                      placeholder="Contoh: 500mg"
+                      value={jumlahResep[index]}
                       onChange={(e) => {
-                        const newList = [...bentukObatList];
-                        newList[index] = e.target.value;
-                        setBentukObatList(newList);
+                        const newJumlahResep = [...jumlahResep];
+                        newJumlahResep[index] = e.target.value;
+                        setJumlahResep(newJumlahResep);
                       }}
                     />
-                    {inputValidation.bentukObat[index] && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {inputValidation.bentukObat[index]}
-                      </p>
-                    )}
                   </div>
+
                   <div className="flex flex-col col-span-1">
                     <label
-                      htmlFor={`dosis-${index}`}
+                      htmlFor={`dosis-resep-${index}`}
                       className="text-sm font-medium text-gray-700"
                     >
-                      Dosis Obat {index + 1}
+                      Dosis
                     </label>
                     <input
                       type="text"
-                      id={`dosis-${index}`}
+                      id={`dosis-resep-${index}`}
                       className="mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
-                      placeholder="Contoh: 3 kali sehari"
-                      value={dosisObatList[index]}
+                      placeholder="Dosis"
+                      value={dosisResep[index]}
                       onChange={(e) => {
-                        const newList = [...dosisObatList];
-                        newList[index] = e.target.value;
-                        setDosisObatList(newList);
+                        const newDosisResep = [...dosisResep];
+                        newDosisResep[index] = e.target.value;
+                        setDosisResep(newDosisResep);
                       }}
                     />
-                    {inputValidation.dosisObat[index] && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {inputValidation.dosisObat[index]}
-                      </p>
-                    )}
                   </div>
-                  <div className="flex flex-col col-span-1 mb-2">
+                  <div className="flex flex-col col-span-1 md:col-span-1">
                     <label
-                      htmlFor={`penggunaan-${index}`}
+                      htmlFor={`bentuk-resep-${index}`}
                       className="text-sm font-medium text-gray-700"
                     >
-                      Cara Pakai {index + 1}
+                      Bentuk Resep
                     </label>
-                    <textarea
-                      id={`penggunaan-${index}`}
-                      className="mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
-                      placeholder="Contoh: Diminum setelah makan"
-                      rows="3"
-                      value={caraPakaiList[index]}
-                      onChange={(e) => {
-                        const newList = [...caraPakaiList];
-                        newList[index] = e.target.value;
-                        setCaraPakaiList(newList);
+                    <Select
+                      id={`bentuk-resep-${index}`}
+                      placeholder="Pilih Bentuk Resep"
+                      className="mt-1"
+                      value={bentukResep[index]}
+                      onChange={(value) => {
+                        const newBentukResep = [...bentukResep];
+                        newBentukResep[index] = value;
+                        setBentukResep(newBentukResep);
                       }}
-                    ></textarea>
-                    {inputValidation.caraPakai[index] && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {inputValidation.caraPakai[index]}
-                      </p>
-                    )}
+                    >
+                      <Option value="tablet">Tablet</Option>
+                      <Option value="sirup">Sirup</Option>
+                      <Option value="kapsul">Kapsul</Option>
+                    </Select>
                   </div>
-                  {index > 0 && (
+                  <div className="flex flex-col col-span-1">
+                    <label
+                      htmlFor={`cara-pakai-${index}`}
+                      className="text-sm font-medium text-gray-700"
+                    >
+                      Cara Pakai
+                    </label>
+                    <input
+                      type="text"
+                      id={`cara-pakai-${index}`}
+                      className="mt-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 transition-colors focus:border-blue-500 border-yellow-300"
+                      placeholder="Cara Pakai"
+                      value={caraPakaiResep[index]}
+                      onChange={(e) => {
+                        const newCaraPakaiResep = [...caraPakaiResep];
+                        newCaraPakaiResep[index] = e.target.value;
+                        setCaraPakaiResep(newCaraPakaiResep);
+                      }}
+                    />
+                  </div>
+
+                  <div className="flex justify-center col-span-2">
                     <button
                       type="button"
+                      className="text-red-600 hover:text-red-800 focus:outline-none"
                       onClick={() => removeField(index)}
-                      className="ml-3 flex items-center text-red-500"
                     >
-                      Hapus Obat
+                      Hapus Resep
                     </button>
-                  )}
+                  </div>
                 </div>
               ))}
+
+              <div className="flex">
+                <button
+                  type="button"
+                  className="text-m text-blue-500 hover:text-blue-700 focus:outline-none"
+                  onClick={addField}
+                >
+                  <AiOutlinePlusCircle className="w-6 h-6 inline-block align-text-bottom mr-1" />
+                  Tambah Resep
+                </button>
+              </div>
             </div>
 
             {error && (
-              <p className="text-center text-red-500 text-sm ml-1 mb-2">
-                {error}
-              </p>
+              <div className="text-red-500 text-sm mb-4">
+                <p>{error}</p>
+              </div>
             )}
 
-            <button
-              type="button"
-              onClick={addField}
-              className="ml-3 flex items-center text-blue-500"
-            >
-              <AiOutlinePlusCircle className="mr-1" />
-              Tambah Obat
-            </button>
-            <div className="flex justify-center bg-blue-300 py-1 px-0 rounded-lg mb-2 mt-2">
-              <button type="submit" className="hover:underline">
-                <span className="inline-block">
-                  Selanjutnya{" "}
-                  <span className="text-lg inline-block transform transition-transform duration-300 ease-in-out hover:translate-x-3 ">
-                    ➔
-                  </span>
-                </span>
+            {success && (
+              <div className="text-green-500 text-sm mb-4">
+                <p>Resep berhasil disimpan.</p>
+              </div>
+            )}
+
+            <div className="mt-4">
+              <button
+                type="submit"
+                className="text-l w-full py-2 bg-blue-400 text-black rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition"
+              >
+                Simpan
               </button>
             </div>
           </form>
+
           {showConfirmationPopup && (
             <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-              <div className="bg-white p-6 rounded-lg shadow-lg w-80 max-w-full border border-yellow-500">
-                <p className="mb-4 text-lg font-bold text-center text-gray-800">
-                  Data Obat Sudah Benar?
-                </p>
-                <div className="text-sm mb-6 space-y-2 text-gray-700">
-                  {namaObatList.map((namaObat, index) => (
-                    <div key={index} className="mb-4">
-                      <p>
-                        <strong>Obat {index + 1}</strong>
-                      </p>
-                      <p>Nama Obat: {namaObat}</p>
-                      <p>Jumlah Obat: {jumlahObatList[index]}</p>
-                      <p>Bentuk Obat: {bentukObatList[index]}</p>
-                      <p>Dosis Obat: {dosisObatList[index]}</p>
-                      <p>Cara Pakai: {caraPakaiList[index]}</p>
-                    </div>
-                  ))}
-                </div>
+              <div className="bg-white p-6 rounded-lg shadow-lg w-100 max-w-full border border-yellow-500">
+                <p className="mb-4">Apakah Anda yakin ingin menyimpan resep?</p>
+
                 <div className="flex justify-center space-x-4">
                   <button
                     className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition"

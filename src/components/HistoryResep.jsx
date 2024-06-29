@@ -60,7 +60,7 @@ const HistoryResep = () => {
         try {
           const obatIds = selectedObatData.map((obat) => obat.id);
           const resepObatPromises = obatIds.map((obatId) =>
-            api.get(`/resep_obat/obat/${obatId}`)
+            api.get(`/resep_obat/pasien/${obatId}`)
           );
           const resepObatResponses = await Promise.all(resepObatPromises);
           const allResepObatData = resepObatResponses.map(
@@ -87,13 +87,13 @@ const HistoryResep = () => {
       const response = await api.get(`/pasien/${record.id}`);
       const pasienData = response.data;
 
-      const obatResponse = await api.get(`/obat/${record.id}`);
+      const obatResponse = await api.get(`/obat/pasien/${record.id}`); // Mengambil obat berdasarkan ID pasien
       const obatData = obatResponse.data;
 
       const obatIds = obatData.map((obat) => obat.id);
 
       const resepObatPromises = obatIds.map((obatId) =>
-        api.get(`/resep_obat/obat/${obatId}`)
+        api.get(`/resep_obat/pasien/${record.id}`)
       );
       const resepObatResponses = await Promise.all(resepObatPromises);
       const allResepObatData = resepObatResponses.map(
@@ -126,6 +126,49 @@ const HistoryResep = () => {
       setPasienList(updatedPasienList);
 
       message.success("Status resep berhasil diperbarui");
+    } catch (error) {
+      console.error("Error fetching patient data:", error);
+      message.error("Gagal memperbarui status resep");
+    }
+  };
+  const handlePrint = async (record) => {
+    try {
+      setModalVisible(true);
+      setSelectedPasienId(record.id);
+
+      const response = await api.get(`/pasien/${record.id}`);
+      const pasienData = response.data;
+
+      const obatResponse = await api.get(`/obat/pasien/${record.id}`); // Mengambil obat berdasarkan ID pasien
+      const obatData = obatResponse.data;
+
+      const obatIds = obatData.map((obat) => obat.id);
+
+      const resepObatPromises = obatIds.map((obatId) =>
+        api.get(`/resep_obat/pasien/${record.id}`)
+      );
+      const resepObatResponses = await Promise.all(resepObatPromises);
+      const allResepObatData = resepObatResponses.map(
+        (response) => response.data
+      );
+
+      const mergedResepObatData = allResepObatData.flat();
+      setSelectedPasienData(pasienData);
+      setSelectedObatData(obatData);
+      setSelectedResepObatData(mergedResepObatData);
+
+      const selectedResepObatGroupedByObatId = mergedResepObatData.reduce(
+        (acc, resep_obat) => {
+          if (!acc[resep_obat.id_obat]) {
+            acc[resep_obat.id_obat] = [];
+          }
+          acc[resep_obat.id_obat].push(resep_obat);
+          return acc;
+        },
+        {}
+      );
+      setSelectedResepObatByObatId(selectedResepObatGroupedByObatId);
+      setResepProcessed(true);
     } catch (error) {
       console.error("Error fetching patient data:", error);
       message.error("Gagal memperbarui status resep");
@@ -267,17 +310,28 @@ const HistoryResep = () => {
       responsive: ["xs", "sm", "md", "lg"],
     },
     {
-      title: "Aksi",
+      title: <div style={{ textAlign: "center" }}>Aksi</div>,
       key: "action",
       render: (record) => (
-        <Button
-          type="primary"
-          onClick={() => handleAction(record)}
-          style={{ backgroundColor: "#32CD32", borderColor: "#32CD32" }}
-          disabled={record.proses === "Selesai"}
-        >
-          Buat Resep
-        </Button>
+        <>
+          <div style={{ textAlign: "center" }}>
+            <Button
+              type="primary"
+              onClick={() => handleAction(record)}
+              style={{ backgroundColor: "#32CD32", borderColor: "#32CD32" }}
+              disabled={record.proses === "Selesai"}
+            >
+              Buat Resep
+            </Button>
+            <Button
+              type="default"
+              onClick={() => handlePrint(record)}
+              style={{ marginLeft: 8 }}
+            >
+              Cetak Resep
+            </Button>
+          </div>
+        </>
       ),
       className: "border border-yellow-200",
       responsive: ["xs", "sm", "md", "lg"],
@@ -341,9 +395,9 @@ const HistoryResep = () => {
           )}
           {selectedObatData &&
             selectedObatData.map((obat, index) => (
-              <div key={obat.id} className="mb-8 overflow-x-auto">
+              <div key={obat.id} className="overflow-x-auto">
                 <h2 className="mb-1 text-l font-semibold text-left">
-                  Data Obat {index + 1}
+                  Data Obat
                 </h2>
                 <table className="min-w-full table-auto border border-collapse border-black mb-4">
                   <thead>
@@ -357,20 +411,11 @@ const HistoryResep = () => {
                       <th className="border border-black font-semibold p-2">
                         Jumlah Obat
                       </th>
-                      <th className="border border-black font-semibold p-2">
-                        Bentuk Obat
-                      </th>
-                      <th className="border border-black font-semibold p-2">
-                        Dosis Obat
-                      </th>
-                      <th className="border border-black font-semibold p-2">
-                        Cara Pakai
-                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td className="border border-black p-2 text-xs text-center">
+                      <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
                         {index + 1}
                       </td>
                       <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
@@ -379,22 +424,16 @@ const HistoryResep = () => {
                       <td className="border border-black p-2 text-xs text-center">
                         {obat.jumlah_obat}
                       </td>
-                      <td className="border border-black p-2 text-xs text-center">
-                        {obat.bentuk_obat}
-                      </td>
-                      <td className="border border-black p-2 text-xs text-center">
-                        {obat.dosis_obat}
-                      </td>
-                      <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
-                        {obat.cara_pakai}
-                      </td>
                     </tr>
                   </tbody>
                 </table>
-
-                {}
+              </div>
+            ))}
+          {selectedResepObatData &&
+            selectedResepObatData.map((resep_obat, index) => (
+              <div key={resep_obat.id} className="mb-9 overflow-x-auto">
                 <h2 className="mb-1 text-l font-semibold text-left">
-                  Data Resep Obat {index + 1}
+                  Data Resep Obat
                 </h2>
                 <table className="min-w-full table-auto border border-collapse border-black mb-4">
                   <thead>
@@ -411,28 +450,178 @@ const HistoryResep = () => {
                       <th className="border border-black font-semibold p-2">
                         Bentuk Resep
                       </th>
+                      <th className="border border-black font-semibold p-2">
+                        Dosis
+                      </th>
+                      <th className="border border-black font-semibold p-2">
+                        Cara Pakai
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
-                    {}
-                    {selectedResepObatByObatId[obat.id]?.map(
-                      (resep_obat, index) => (
-                        <tr key={resep_obat.id}>
-                          <td className="border border-black p-2 text-xs text-center">
-                            {index + 1}
-                          </td>
-                          <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
-                            {resep_obat.nama_resep}
-                          </td>
-                          <td className="border border-black p-2 text-xs text-center">
-                            {resep_obat.jumlah_resep}
-                          </td>
-                          <td className="border border-black p-2 text-xs text-center">
-                            {resep_obat.bentuk_resep}
-                          </td>
-                        </tr>
-                      )
-                    )}
+                    <tr>
+                      <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
+                        {index + 1}
+                      </td>
+                      <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
+                        {resep_obat.nama_resep}
+                      </td>
+                      <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
+                        {resep_obat.jumlah_resep}mg
+                      </td>
+                      <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
+                        {resep_obat.bentuk_resep}
+                      </td>
+                      <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
+                        {resep_obat.dosis}
+                      </td>
+                      <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
+                        {resep_obat.cara_pakai}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            ))}
+          <DetailResep
+            pasienId={selectedPasienId}
+            selectedPasienData={selectedPasienData}
+            selectedObatData={selectedObatData}
+            selectedResepObatData={selectedResepObatData}
+            onClose={handleCloseModal}
+            onProcessCompleted={handleProcessCompleted}
+          />
+          <div className="flex justify-center mt-9">
+            <img src={Logo} className="h-8" alt="Klinik Logo" />
+          </div>
+          <div
+            className="mt-4 text-center text-gray-600"
+            style={{ fontSize: "0.7rem" }}
+          >
+            <span>
+              Klinik Asy-Syifa &copy; {new Date().getFullYear()} Lokasi: Desa
+              Randudongkal, Pemalang, Jawa Tengah, Indonesia
+            </span>
+          </div>
+        </div>
+      </Modal>
+      <Modal
+        title={<div className="text-center text-xl">Resep Obat Pasien</div>}
+        open={modalVisible}
+        onCancel={handleCloseModal}
+        footer={null}
+        centered
+        width={800}
+        closable={true}
+        style={{ height: "90vh", overflowY: "auto" }}
+      >
+        <div className="p-4 text-xs max-h-[1000px] overflow-y-auto">
+          {selectedPasienData && (
+            <div className="mb-7">
+              <p className="text-xs">
+                <span className="font-semibold">Nama:</span>{" "}
+                {selectedPasienData.nama_pasien}
+              </p>
+              <p className="text-xs">
+                <span className="font-semibold">Alamat:</span>{" "}
+                {selectedPasienData.alamat_pasien}
+              </p>
+              <p className="text-xs">
+                <span className="font-semibold">Dokter:</span>{" "}
+                {selectedPasienData.dokter}
+              </p>
+              <p className="text-xs">
+                <span className="font-semibold">Tanggal Berobat:</span>{" "}
+                {selectedPasienData.tanggal_berobat}
+              </p>
+            </div>
+          )}
+          {selectedObatData &&
+            selectedObatData.map((obat, index) => (
+              <div key={obat.id} className="overflow-x-auto">
+                <h2 className="mb-1 text-l font-semibold text-left">
+                  Data Obat
+                </h2>
+                <table className="min-w-full table-auto border border-collapse border-black mb-4">
+                  <thead>
+                    <tr>
+                      <th className="border border-black font-semibold p-2">
+                        No
+                      </th>
+                      <th className="border border-black font-semibold p-2">
+                        Nama Obat
+                      </th>
+                      <th className="border border-black font-semibold p-2">
+                        Jumlah Obat
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
+                        {index + 1}
+                      </td>
+                      <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
+                        {obat.nama_obat}
+                      </td>
+                      <td className="border border-black p-2 text-xs text-center">
+                        {obat.jumlah_obat}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            ))}
+          {selectedResepObatData &&
+            selectedResepObatData.map((resep_obat, index) => (
+              <div key={resep_obat.id} className="mb-9 overflow-x-auto">
+                <h2 className="mb-1 text-l font-semibold text-left">
+                  Data Resep Obat
+                </h2>
+                <table className="min-w-full table-auto border border-collapse border-black mb-4">
+                  <thead>
+                    <tr>
+                      <th className="border border-black font-semibold p-2">
+                        No
+                      </th>
+                      <th className="border border-black font-semibold p-2">
+                        Nama Resep
+                      </th>
+                      <th className="border border-black font-semibold p-2">
+                        Jumlah Resep
+                      </th>
+                      <th className="border border-black font-semibold p-2">
+                        Bentuk Resep
+                      </th>
+                      <th className="border border-black font-semibold p-2">
+                        Dosis
+                      </th>
+                      <th className="border border-black font-semibold p-2">
+                        Cara Pakai
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
+                        {index + 1}
+                      </td>
+                      <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
+                        {resep_obat.nama_resep}
+                      </td>
+                      <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
+                        {resep_obat.jumlah_resep}
+                      </td>
+                      <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
+                        {resep_obat.bentuk_resep}
+                      </td>
+                      <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
+                        {resep_obat.dosis}
+                      </td>
+                      <td className="border border-black p-2 text-xs text-center whitespace-nowrap overflow-hidden">
+                        {resep_obat.cara_pakai}
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </div>

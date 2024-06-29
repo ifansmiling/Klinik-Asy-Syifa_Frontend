@@ -41,7 +41,6 @@ const Dashboard = () => {
         const pasienList = response.data;
         setPatientsToday(pasienList.length);
       } catch (error) {
-        console.error("Error fetching patients today:", error);
       }
     };
 
@@ -51,7 +50,6 @@ const Dashboard = () => {
         const totalResep = response.data.totalResepObatHariIni;
         setTotalResepHariIni(totalResep);
       } catch (error) {
-        console.error("Error fetching total resep hari ini:", error);
       }
     };
 
@@ -62,7 +60,7 @@ const Dashboard = () => {
         setPatientsSelesaiHariIni(pasienList);
       } catch (error) {
         console.error(
-          "Error fetching patients with finished prescriptions today:",
+          "",
           error
         );
       }
